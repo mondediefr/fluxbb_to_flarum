@@ -49,7 +49,14 @@ foreach ($tags as $tag) {
     $last_discussion_id = $last_discussion[0]['discussion_id'];
     $last_time = $last_discussion[0]['time'];
 
-    RunQuery($dbFlarum, "UPDATE tags SET last_discussion_id = $last_discussion_id, last_time = '$last_time' WHERE id = $tagId");
+
+    $tagData = [
+        ':tagId' => $tagId,
+        ':last_time' => empty($last_time) ? null:$last_time,
+        ':last_discussion_id' => $last_discussion_id
+    ];
+
+    $query = RunPreparedQuery($dbFlarum, $tagData, "UPDATE tags SET last_discussion_id = :last_discussion_id, last_time = :last_time WHERE id = :tagId");
 
     // Update tags.discussions_count
     $query = RunQuery($dbFlarum, "SELECT COUNT(*) AS count FROM discussions_tags WHERE tag_id = $tagId");

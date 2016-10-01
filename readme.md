@@ -89,7 +89,6 @@ And init importer :
 ```bash
 ./run init
 
-[INFO] Install s9e/TextFormatter lib
 [INFO] Install migration script dependencies
 [INFO] Generate the default TextFormatter bundle
 ```
