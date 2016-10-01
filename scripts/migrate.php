@@ -3,7 +3,6 @@
 $timestamp_debut = microtime(true);
 
 require 'vendor/autoload.php';
-include 'TextFormatter/src/autoloader.php';
 include 'TextCustomBundle/TextFormatter.php';
 include 'function.php';
 

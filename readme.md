@@ -28,6 +28,7 @@ Flarum is still in beta testing, therefore only some of the typical web forum fe
 ### Roadmap
 
 - Private Messages are not exported yet, since this feature is not yet supported by Flarum.
+- Forums permissions (forum_perms -> permissions)
 
 ### Usage instructions
 

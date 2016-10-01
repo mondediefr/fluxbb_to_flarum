@@ -2,7 +2,6 @@
 
 action=$1
 
-TEXTFORMATTER_VERSION="0.7.1"
 SQL_PATH="/scripts/sql"
 AVATAR_PATH="/flarum/app/assets/avatars"
 SMILEYS_PATH="/flarum/app/assets/images/smileys"
@@ -43,11 +42,6 @@ CREATE USER '${DB_FLARUM_USER}'@'%' IDENTIFIED BY '${DB_FLARUM_PASS}';
 GRANT USAGE ON *.* TO '${DB_FLARUM_USER}'@'%';
 GRANT ALL PRIVILEGES ON ${DB_FLARUM_NAME}.* TO '${DB_FLARUM_USER}'@'%';
 EOF
-
-if [ ! -d "/scripts/TextFormatter" ]; then
-  echo "[INFO] Install s9e/TextFormatter lib"
-  git clone -q https://github.com/s9e/TextFormatter.git -b "${TEXTFORMATTER_VERSION}" /scripts/TextFormatter > /dev/null 2>&1
-fi
 
 if [ ! -f "/scripts/composer.lock" ]; then
   echo "[INFO] Install migration script dependencies"

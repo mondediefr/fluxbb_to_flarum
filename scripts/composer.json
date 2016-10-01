@@ -2,7 +2,8 @@
     "name": "mondediefr/importer",
     "require": {
         "intervention/image": "^2.3",
-        "illuminate/support": "^5.3"
+        "illuminate/support": "^5.3",
+        "s9e/text-formatter": "^0.7.1"
     },
     "authors": [
         {

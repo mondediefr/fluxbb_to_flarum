@@ -1,6 +1,6 @@
 <?php
 
-include 'TextFormatter/src/autoloader.php';
+require 'vendor/autoload.php';
 
 /*
  * For more information, read the documentation of s9e/TextFormatter :
