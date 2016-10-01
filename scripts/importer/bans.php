@@ -36,4 +36,4 @@ foreach ($bans as $ban) {
 
 WriteInLog("DONE. Results : ");
 WriteInLog("> " . $bansMigrated . " ban(s) migrated successfully");
-WriteInLog("> " . $bansIgnored . " ignored ban(s) (account not found)");
+WriteInLog("> " . $bansIgnored . " ban(s) ignored (account not found)");

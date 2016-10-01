@@ -72,4 +72,4 @@ $diff = $timestamp_fin - $timestamp_debut;
 $min = floor($diff / 60);
 $sec = floor($diff - $min * 60);
 
-WriteInLog("---------------------- END OF MIGRATION in $min min $sec sec ----------------------");
+WriteInLog("---------------------- END OF MIGRATION (time : $min min $sec sec) ----------------------");

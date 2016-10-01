@@ -7,7 +7,7 @@ WriteInLog("###########################################");
 $query = RunQuery($dbFluxbb, "SELECT * FROM " . $dbPrefix . "topic_subscriptions");
 $subscriptions = $query->fetchAll(PDO::FETCH_ASSOC);
 
-WriteInLog("Migrating" . $query->rowCount() . " topic subscriptions...");
+WriteInLog("Migrating " . $query->rowCount() . " topic subscriptions...");
 $subscriptionsMigrated = 0;
 
 foreach ($subscriptions as $subscription) {

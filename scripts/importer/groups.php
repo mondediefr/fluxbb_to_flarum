@@ -54,7 +54,7 @@ foreach ($groups as $group) {
     $query = RunPreparedQuery($dbFlarum, $groupData, "INSERT INTO groups(id, name_singular, name_plural, color, icon) VALUES(:id, :name_singular, :name_plural, :color, :icon)");
     $groupsMigrated += $query->rowCount();
 
-    WriteInLog("+ Groupe '" . $group['g_title'] . "' traité");
+    WriteInLog("+ Groupe '" . $group['g_title'] . "' done");
 
     /*
     GROUPS PERMISSIONS
