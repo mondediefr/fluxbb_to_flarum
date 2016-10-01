@@ -90,7 +90,7 @@ function ReplaceUnsupportedMarks($text) {
 
 function ConvertLinkFluxbb($text) {
 
-    global $dbFlarum, $dbFluxbb, $dbPrefix;
+    global $dbFlarum, $dbFluxbb, $dbFluxbbPrefix;
 
     // convert link :
     // - https://domain.tld/viewtopic.php?id=xxx
@@ -124,12 +124,12 @@ function ConvertLinkFluxbb($text) {
     // - https://domain.tld/viewforum.php?id=xxx
     $text = preg_replace_callback(
         "/viewforum\.php\?id=([0-9]+)&p=[0-9]+|viewforum\.php\?id=([0-9]+)/",
-        function($matches) use ($dbFluxbb, $dbPrefix) {
+        function($matches) use ($dbFluxbb, $dbFluxbbPrefix) {
             $id = $matches[1];
             if (isset($matches[2])) {
                 $id = $matches[2];
             }
-            $query = RunPreparedQuery($dbFluxbb, [':id' => $id], "SELECT forum_name FROM {$dbPrefix}forums WHERE id = :id");
+            $query = RunPreparedQuery($dbFluxbb, [':id' => $id], "SELECT forum_name FROM ${dbFluxbbPrefix}forums WHERE id = :id");
             $info_slug = $query->fetchAll(PDO::FETCH_ASSOC);
             $slug = $info_slug[0]['forum_name'];
             $slug = Slugify($slug);

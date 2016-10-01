@@ -4,7 +4,7 @@ WriteInLog("###################################");
 WriteInLog("### [5/8] User groups migration ###");
 WriteInLog("###################################");
 
-$query = RunQuery($dbFluxbb, "SELECT * FROM {$dbPrefix}groups");
+$query = RunQuery($dbFluxbb, "SELECT * FROM ${dbFluxbbPrefix}groups");
 $groups = $query->fetchAll(PDO::FETCH_ASSOC);
 
 WriteInLog("Migrating " . $query->rowCount() . " user groups...");
@@ -30,7 +30,7 @@ foreach ($groups as $group) {
         $groupId = 2;
     }
 
-    $query = RunPreparedQuery($dbFluxbb, [':group_id' => $group['g_id']], "SELECT id FROM " . $dbPrefix . "users WHERE group_id=:group_id");
+    $query = RunPreparedQuery($dbFluxbb, [':group_id' => $group['g_id']], "SELECT id FROM ${dbFluxbbPrefix}users WHERE group_id = :group_id");
     $users = $query->fetchAll(PDO::FETCH_ASSOC);
 
     // Members are not affiliated with any group in flarum

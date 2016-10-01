@@ -4,7 +4,7 @@ WriteInLog("#################################");
 WriteInLog("### [7/8] User bans migration ###");
 WriteInLog("#################################");
 
-$query = RunQuery($dbFluxbb, "SELECT * FROM {$dbPrefix}bans");
+$query = RunQuery($dbFluxbb, "SELECT * FROM ${dbFluxbbPrefix}bans");
 $bans = $query->fetchAll(PDO::FETCH_ASSOC);
 
 WriteInLog("Migrating " . $query->rowCount() . " bans...");

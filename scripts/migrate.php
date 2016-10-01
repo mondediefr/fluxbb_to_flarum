@@ -23,14 +23,14 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 parse_str($argv[1]);
 
-$dbHost       = trim($dbHost);
-$dbFluxbbUser = trim($dbFluxbbUser);
-$dbFluxbbName = trim($dbFluxbbName);
-$dbFluxbbPass = trim($dbFluxbbPass);
-$dbFlarumUser = trim($dbFlarumUser);
-$dbFlarumName = trim($dbFlarumName);
-$dbFlarumPass = trim($dbFlarumPass);
-$dbPrefix     = 'flux_';
+$dbHost         = trim($dbHost);
+$dbFluxbbUser   = trim($dbFluxbbUser);
+$dbFluxbbName   = trim($dbFluxbbName);
+$dbFluxbbPass   = trim($dbFluxbbPass);
+$dbFlarumUser   = trim($dbFlarumUser);
+$dbFlarumName   = trim($dbFlarumName);
+$dbFlarumPass   = trim($dbFlarumPass);
+$dbFluxbbPrefix = trim($dbFluxbbPrefix);
 
 WriteInLog("------------------- STARTING MIGRATION PROCESS -------------------");
 

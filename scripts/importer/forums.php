@@ -4,7 +4,7 @@ WriteInLog("#####################################");
 WriteInLog("### [3/8] Subcategories migration ###");
 WriteInLog("#####################################");
 
-$query = RunQuery($dbFluxbb, "SELECT id, forum_name, forum_desc, disp_position, cat_id FROM {$dbPrefix}forums");
+$query = RunQuery($dbFluxbb, "SELECT id, forum_name, forum_desc, disp_position, cat_id FROM ${dbFluxbbPrefix}forums");
 $forums = $query->fetchAll(PDO::FETCH_ASSOC);
 
 WriteInLog("Migrating " . $query->rowCount() . " subcategories...");

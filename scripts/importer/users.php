@@ -7,7 +7,7 @@ WriteInLog("#############################");
 WriteInLog("### [1/8] Users migration ###");
 WriteInLog("#############################");
 
-$query = RunQuery($dbFluxbb, "SELECT id, username, email, registered, last_visit, signature FROM {$dbPrefix}users");
+$query = RunQuery($dbFluxbb, "SELECT id, username, email, registered, last_visit, signature FROM ${dbFluxbbPrefix}users");
 $users = $query->fetchAll(PDO::FETCH_ASSOC);
 
 WriteInLog("Migrating " . $query->rowCount() . " users...");

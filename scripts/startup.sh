@@ -15,6 +15,7 @@ DB_PARAMS=" \
   &dbFlarumUser=${DB_FLARUM_USER} \
   &dbFlarumName=${DB_FLARUM_NAME} \
   &dbFlarumPass=${DB_FLARUM_PASS} \
+  &dbFluxbbPrefix=${DB_FLUXBB_PREFIX}
 "
 
 if [ -f "${SQL_PATH}/fluxbb_init.sql" ]; then

@@ -4,7 +4,7 @@ WriteInLog("##################################");
 WriteInLog("### [2/8] Categories migration ###");
 WriteInLog("##################################");
 
-$query = RunQuery($dbFluxbb, "SELECT id, cat_name, disp_position FROM {$dbPrefix}categories");
+$query = RunQuery($dbFluxbb, "SELECT id, cat_name, disp_position FROM ${dbFluxbbPrefix}categories");
 $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
 WriteInLog("Migrating " . $query->rowCount() . " categories...");

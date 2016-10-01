@@ -4,7 +4,7 @@ WriteInLog("###########################################");
 WriteInLog("### [6/8] Topic subscriptions migration ###");
 WriteInLog("###########################################");
 
-$query = RunQuery($dbFluxbb, "SELECT * FROM {$dbPrefix}topic_subscriptions");
+$query = RunQuery($dbFluxbb, "SELECT * FROM ${dbFluxbbPrefix}topic_subscriptions");
 $subscriptions = $query->fetchAll(PDO::FETCH_ASSOC);
 
 WriteInLog("Migrating " . $query->rowCount() . " topic subscriptions...");

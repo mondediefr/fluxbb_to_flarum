@@ -4,7 +4,7 @@ WriteInLog("########################################");
 WriteInLog("### [4/8] Topics and posts migration ###");
 WriteInLog("########################################");
 
-$query = RunQuery($dbFluxbb, "SELECT * FROM {$dbPrefix}topics");
+$query = RunQuery($dbFluxbb, "SELECT * FROM ${dbFluxbbPrefix}topics");
 $topics = $query->fetchAll(PDO::FETCH_ASSOC);
 WriteInLog("Migrating " . $query->rowCount() . " topics...");
 
@@ -32,7 +32,7 @@ foreach ($topics as $topic) {
     // +1 = include the first post of the topic
     $totalPostsInDiscussion = (intval($topic['num_replies']) + 1);
 
-    $query = RunPreparedQuery($dbFluxbb, [':topic_id' => $topic['id']], "SELECT * FROM " . $dbPrefix . "posts WHERE topic_id=:topic_id ORDER BY id");
+    $query = RunPreparedQuery($dbFluxbb, [':topic_id' => $topic['id']], "SELECT * FROM ${dbFluxbbPrefix}posts WHERE topic_id = :topic_id ORDER BY id");
     $posts = $query->fetchAll(PDO::FETCH_ASSOC);
 
     $currentPostNumber = 0;
@@ -108,7 +108,7 @@ foreach ($topics as $topic) {
     // Topic/tags link
     //
 
-    $query = RunPreparedQuery($dbFluxbb, [':id' => $topic['forum_id']], "SELECT cat_id FROM " . $dbPrefix . "forums WHERE id=:id");
+    $query = RunPreparedQuery($dbFluxbb, [':id' => $topic['forum_id']], "SELECT cat_id FROM ${dbFluxbbPrefix}forums WHERE id = :id");
     $row = $query->fetch(PDO::FETCH_ASSOC);
 
     // Link the topic with a primary tag (fluxbb category)
