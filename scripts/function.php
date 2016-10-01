@@ -48,11 +48,11 @@ function Slugify($text) {
     $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
     $text = trim($text, '-');
     // $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text); --> doesn't work :(
-    $unwanted = array('Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+    $unwanted = ['Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
                       'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
                       'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
                       'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
-                      'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
+                      'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y'];
     $text = strtr($text, $unwanted);
     $text = strtolower($text);
     $text = preg_replace('~-+~', '-', $text);
@@ -110,7 +110,7 @@ function ConvertLinkFluxbb($text) {
             if (isset($matches[2])) {
                 $pid = $matches[2];
             }
-            $query = RunQuery($dbFlarum, "SELECT number, discussion_id FROM posts WHERE id = $pid");
+            $query = RunPreparedQuery($dbFlarum, [':id' => $pid], "SELECT number, discussion_id FROM posts WHERE id = :id");
             $info_id = $query->fetchAll(PDO::FETCH_ASSOC);
             $discussionId = intval($info_id[0]['discussion_id']);
             $number = intval($info_id[0]['number']);
@@ -129,7 +129,7 @@ function ConvertLinkFluxbb($text) {
             if (isset($matches[2])) {
                 $id = $matches[2];
             }
-            $query = RunQuery($dbFluxbb, 'SELECT forum_name FROM ' . $dbPrefix . 'forums WHERE id =' . $id);
+            $query = RunPreparedQuery($dbFluxbb, [':id' => $id], "SELECT forum_name FROM {$dbPrefix}forums WHERE id = :id");
             $info_slug = $query->fetchAll(PDO::FETCH_ASSOC);
             $slug = $info_slug[0]['forum_name'];
             $slug = Slugify($slug);
@@ -150,7 +150,7 @@ function GetUserID($db, $username) {
     if(preg_match('/\s/', $username) || strpos($username, ' ')) {
         $username = RemoveSpaces($username);
     }
-    $query = RunPreparedQuery($db, array(':username' => $username), "SELECT id FROM users WHERE username=:username");
+    $query = RunPreparedQuery($db, [':username' => $username], "SELECT id FROM users WHERE username=:username");
     $row = $query->fetch(PDO::FETCH_ASSOC);
     return $row['id'];
 }

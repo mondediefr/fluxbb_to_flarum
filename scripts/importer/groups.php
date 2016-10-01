@@ -4,7 +4,7 @@ WriteInLog("###################################");
 WriteInLog("### [5/8] User groups migration ###");
 WriteInLog("###################################");
 
-$query = RunQuery($dbFluxbb, "SELECT * FROM " . $dbPrefix . "groups");
+$query = RunQuery($dbFluxbb, "SELECT * FROM {$dbPrefix}groups");
 $groups = $query->fetchAll(PDO::FETCH_ASSOC);
 
 WriteInLog("Migrating " . $query->rowCount() . " user groups...");
@@ -30,26 +30,26 @@ foreach ($groups as $group) {
         $groupId = 2;
     }
 
-    $query = RunPreparedQuery($dbFluxbb, array(':group_id' => $group['g_id']), "SELECT id FROM " . $dbPrefix . "users WHERE group_id=:group_id");
+    $query = RunPreparedQuery($dbFluxbb, [':group_id' => $group['g_id']], "SELECT id FROM " . $dbPrefix . "users WHERE group_id=:group_id");
     $users = $query->fetchAll(PDO::FETCH_ASSOC);
 
     // Members are not affiliated with any group in flarum
     if ($groupId != 3) {
         foreach ($users as $user) {
-            RunPreparedQuery($dbFlarum, array(
+            RunPreparedQuery($dbFlarum, [
                 ':user_id' => $user['id'],
                 ':group_id' => $groupId
-            ), "INSERT INTO users_groups(user_id, group_id) VALUES(:user_id, :group_id)");
+            ], "INSERT INTO users_groups(user_id, group_id) VALUES(:user_id, :group_id)");
         }
     }
 
-    $groupData = array(
+    $groupData = [
         ':id' => $groupId,
         ':name_singular' => $group['g_user_title'],
         ':name_plural' => $group['g_title'],
         ':color' => ($group['g_color']) ? $group['g_color'] : GetRandomColor(),
         ':icon' => $icon
-    );
+    ];
 
     $query = RunPreparedQuery($dbFlarum, $groupData, "INSERT INTO groups(id, name_singular, name_plural, color, icon) VALUES(:id, :name_singular, :name_plural, :color, :icon)");
     $groupsMigrated += $query->rowCount();

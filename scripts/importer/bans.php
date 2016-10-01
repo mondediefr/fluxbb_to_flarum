@@ -4,7 +4,7 @@ WriteInLog("#################################");
 WriteInLog("### [7/8] User bans migration ###");
 WriteInLog("#################################");
 
-$query = RunQuery($dbFluxbb, "SELECT * FROM " . $dbPrefix . "bans");
+$query = RunQuery($dbFluxbb, "SELECT * FROM {$dbPrefix}bans");
 $bans = $query->fetchAll(PDO::FETCH_ASSOC);
 
 WriteInLog("Migrating " . $query->rowCount() . " bans...");
@@ -24,11 +24,11 @@ foreach ($bans as $ban) {
 
     $duration = ($ban['expire']) ? ConvertTimestampToDatetime(intval($ban['expire'])) : date("Y-m-d H:i:s", strtotime('+50 years'));
 
-    $query = RunPreparedQuery($dbFlarum, array(
+    $query = RunPreparedQuery($dbFlarum, [
         ':id' => userId,
         ':email' => $ban['email'],
         ':suspend_until' => $duration
-    ), "UPDATE users SET suspend_until=:suspend_until WHERE id=:id OR email=:email");
+    ], "UPDATE users SET suspend_until=:suspend_until WHERE id=:id OR email=:email");
 
     $bansMigrated += $query->rowCount();
 

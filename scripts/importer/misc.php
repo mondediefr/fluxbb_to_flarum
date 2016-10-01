@@ -13,17 +13,20 @@ foreach ($users as $user) {
     $userId = $user['id'];
 
     // count the number of posts
-    $query = RunQuery($dbFlarum, "SELECT COUNT(id) AS nb_posts FROM posts WHERE user_id = $userId");
+    $query = RunPreparedQuery($dbFlarum, [':user_id' => $userId], "SELECT COUNT(id) AS nb_posts FROM posts WHERE user_id = :user_id");
     $nb_posts = $query->fetchAll(PDO::FETCH_ASSOC);
 
     // count the number of discussions
-    $query = RunQuery($dbFlarum, "SELECT COUNT(id) AS nb_discussions FROM discussions WHERE start_user_id = $userId");
+    $query = RunPreparedQuery($dbFlarum, [':start_user_id' => $userId], "SELECT COUNT(id) AS nb_discussions FROM discussions WHERE start_user_id = :start_user_id");
     $nb_discussions = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    $comments_count = intval($nb_posts[0]['nb_posts']);
-    $discussions_count = intval($nb_discussions[0]['nb_discussions']);
+    $userData = [
+        ':discussions_count' => intval($nb_discussions[0]['nb_discussions']),
+        ':comments_count' => intval($nb_posts[0]['nb_posts']),
+        ':id' => $userId
+    ];
 
-    RunQuery($dbFlarum, "UPDATE users SET discussions_count = $discussions_count, comments_count = $comments_count WHERE id = $userId");
+    RunPreparedQuery($dbFlarum, $userData, "UPDATE users SET discussions_count = :discussions_count, comments_count = :comments_count WHERE id = :id");
 }
 
 WriteInLog("> Done");
@@ -44,27 +47,37 @@ foreach ($tags as $tag) {
     // WHERE discussions_tags.tag_id = 1
     // ORDER BY posts.time DESC
     // LIMIT 1
-    $query = RunQuery($dbFlarum, "SELECT posts.discussion_id, posts.time FROM discussions_tags INNER JOIN posts ON discussions_tags.discussion_id = posts.discussion_id WHERE discussions_tags.tag_id = $tagId ORDER BY posts.time DESC LIMIT 1");
+    $query = RunPreparedQuery(
+        $dbFlarum,
+        [':tag_id' => $tagId],
+        "SELECT posts.discussion_id, posts.time
+        FROM discussions_tags
+        INNER JOIN posts
+        ON discussions_tags.discussion_id = posts.discussion_id
+        WHERE discussions_tags.tag_id = :tag_id
+        ORDER BY posts.time DESC
+        LIMIT 1"
+    );
     $last_discussion = $query->fetchAll(PDO::FETCH_ASSOC);
-    $last_discussion_id = $last_discussion[0]['discussion_id'];
-    $last_time = $last_discussion[0]['time'];
-
 
     $tagData = [
         ':tagId' => $tagId,
-        ':last_time' => empty($last_time) ? null:$last_time,
-        ':last_discussion_id' => $last_discussion_id
+        ':last_time' => empty($last_discussion[0]['time']) ? null:$last_discussion[0]['time'],
+        ':last_discussion_id' => $last_discussion[0]['discussion_id']
     ];
 
-    $query = RunPreparedQuery($dbFlarum, $tagData, "UPDATE tags SET last_discussion_id = :last_discussion_id, last_time = :last_time WHERE id = :tagId");
+    RunPreparedQuery($dbFlarum, $tagData, "UPDATE tags SET last_discussion_id = :last_discussion_id, last_time = :last_time WHERE id = :tagId");
 
     // Update tags.discussions_count
-    $query = RunQuery($dbFlarum, "SELECT COUNT(*) AS count FROM discussions_tags WHERE tag_id = $tagId");
+    $query = RunPreparedQuery($dbFlarum, [':tag_id' => $tagId], "SELECT COUNT(*) AS count FROM discussions_tags WHERE tag_id = :tag_id");
     $discussions_count = $query->fetchAll(PDO::FETCH_ASSOC);
-    $discussions_count = intval($discussions_count[0]['count']);
 
-    RunQuery($dbFlarum, "UPDATE tags SET discussions_count = $discussions_count WHERE id = $tagId");
+    $tagData = [
+        ':discussions_count' => intval($discussions_count[0]['count']),
+        ':id' => $tagId
+    ];
 
+    RunPreparedQuery($dbFlarum, $tagData, "UPDATE tags SET discussions_count = :discussions_count WHERE id = :id");
 }
 
 WriteInLog("> Done");
@@ -82,7 +95,12 @@ foreach ($posts as $post) {
     $content = ConvertLinkFluxbb($content);
     $content = TextFormatter::parse($content);
 
-    RunQuery($dbFlarum, "UPDATE posts SET content = '" . addslashes($content) . "' WHERE id = $postId");
+    $postData = [
+        ':content' => $content,
+        ':id' => $postId
+    ];
+
+    RunPreparedQuery($dbFlarum, $postData,"UPDATE posts SET content = :content WHERE id = :id");
 }
 
 WriteInLog("> Done");

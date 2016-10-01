@@ -2,21 +2,21 @@
 
 // ---------------------------------------------- SMILEYS LIST ----------------------------------------------
 
-$smileys = array(
-    array("smile.png",":)"),
-    array("neutral.png",":|"),
-    array("sad.png",":("),
-    array("big_smile.png",":D"),
-    array("yikes.png",":o"),
-    array("wink.png",";)"),
-    array("hmm.png",":/"),
-    array("tongue.png",":P"),
-    array("monkey.png",":O)"),
-    array("monkey-glass.png","8o)"),
-    array("monkey-smile.png",":oD"),
-    array("noel.gif",":noel:"),
-    array("lol.png",":lol:"),
-    array("mad.png",":mad:"),
-    array("roll.png",":rolleyes:"),
-    array("cool.png",":cool:")
-);
+$smileys = [
+    ["smile.png",":)"],
+    ["neutral.png",":|"],
+    ["sad.png",":("],
+    ["big_smile.png",":D"],
+    ["yikes.png",":o"],
+    ["wink.png",";)"],
+    ["hmm.png",":/"],
+    ["tongue.png",":P"],
+    ["monkey.png",":O)"],
+    ["monkey-glass.png","8o)"],
+    ["monkey-smile.png",":oD"],
+    ["noel.gif",":noel:"],
+    ["lol.png",":lol:"],
+    ["mad.png",":mad:"],
+    ["roll.png",":rolleyes:"],
+    ["cool.png",":cool:"]
+];

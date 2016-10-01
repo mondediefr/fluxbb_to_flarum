@@ -4,7 +4,7 @@ WriteInLog("#####################################");
 WriteInLog("### [3/8] Subcategories migration ###");
 WriteInLog("#####################################");
 
-$query = RunQuery($dbFluxbb, "SELECT id, forum_name, forum_desc, disp_position, cat_id FROM " . $dbPrefix . "forums");
+$query = RunQuery($dbFluxbb, "SELECT id, forum_name, forum_desc, disp_position, cat_id FROM {$dbPrefix}forums");
 $forums = $query->fetchAll(PDO::FETCH_ASSOC);
 
 WriteInLog("Migrating " . $query->rowCount() . " subcategories...");
@@ -16,14 +16,14 @@ $forumsTagsArray = [];
 
 foreach ($forums as $forum) {
 
-    $forumData = array(
+    $forumData = [
         ':name' => $forum['forum_name'],
         ':slug' => Slugify($forum['forum_name']),
         ':description' => $forum['forum_desc'],
         ':color' => GetRandomColor(),
         ':position' => intval($forum['disp_position']),
         ':parent_id' => intval($forum['cat_id'])
-    );
+    ];
 
     $query = RunPreparedQuery($dbFlarum, $forumData, "INSERT INTO tags(name,slug,description,color,position,parent_id) VALUES(:name,:slug,:description,:color,:position,:parent_id)");
     $forumsMigrated += $query->rowCount();
