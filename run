@@ -3,7 +3,7 @@
 action=$1
 
 case "$action" in
-  "migrate"|"update-bundle"|"fluxbb-db-init"|"flarum-db-init")
+  "init"|"migrate"|"update-bundle"|"fluxbb-db-init"|"flarum-db-init")
     docker run --rm -i \
       --env-file $(pwd)/db.env \
       --link mariadb:mariadb \

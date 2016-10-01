@@ -46,12 +46,12 @@ EOF
 
 if [ ! -d "/scripts/TextFormatter" ]; then
   echo "[INFO] Install s9e/TextFormatter lib"
-  git clone -q https://github.com/s9e/TextFormatter.git -b "${TEXTFORMATTER_VERSION}" /scripts/TextFormatter
+  git clone -q https://github.com/s9e/TextFormatter.git -b "${TEXTFORMATTER_VERSION}" /scripts/TextFormatter > /dev/null 2>&1
 fi
 
 if [ ! -f "/scripts/composer.lock" ]; then
   echo "[INFO] Install migration script dependencies"
-  composer install --working-dir=/scripts
+  composer install --quiet --working-dir=/scripts
 fi
 
 if [ -d "${AVATAR_PATH}" ]; then
@@ -66,10 +66,10 @@ else
   mkdir -p $SMILEYS_PATH
 fi
 
-cp -r /scripts/smileys/* $SMILEYS_PATH
+cp -r /scripts/smileys/* $SMILEYS_PATH > /dev/null 2>&1
 
 if [ ! -f "/scripts/TextCustomBundle/TextFormatter.php" ]; then
-  echo "[INFO] Default TextFormatter bundle creation..."
+  echo "[INFO] Creation of the default TextFormatter bundle"
   php7 -f /scripts/createCustomBundle.php
 fi
 

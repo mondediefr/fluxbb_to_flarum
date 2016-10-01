@@ -77,13 +77,23 @@ server {
 docker-compose up -d mariadb
 Creating mariadb
 
-# Then nginx and flarum
+# Wait 1 minute (mariadb init and database creation), then launch nginx and flarum
 docker-compose up -d
 Creating flarum
 Creating nginx
 ```
 
-#### 4 - Export the dump and init fluxbb/flarum databases
+And init importer :
+
+```bash
+./run init
+
+[INFO] Install s9e/TextFormatter lib
+[INFO] Install migration script dependencies
+[INFO] Generate the default TextFormatter bundle
+```
+
+#### 4 - Export your fluxbb dump and init fluxbb/flarum databases
 
 Example :
 
@@ -106,12 +116,6 @@ mysqldump --host=127.0.0.1 \
 
 [INFO] Init fluxbb database
 [INFO] Importing the fluxbb dump
-[INFO] done !
-
-# Init flarum database
-./run flarum-db-init
-
-[INFO] Init flarum database
 [INFO] done !
 ```
 
