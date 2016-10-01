@@ -55,7 +55,6 @@ foreach ($users as $user) {
 
         if ($avatar['is_exist'] === true) {
             $file = 'scripts/avatars/'.$user['id'].'.'.$avatar['extension'];
-            $fileName = basename($file);
             $newFileName = Str::lower(Str::quickRandom()).'.jpg';
 
             $manager = new ImageManager();

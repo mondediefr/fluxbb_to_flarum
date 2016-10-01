@@ -106,10 +106,8 @@ function ConvertLinkFluxbb($text) {
     $text = preg_replace_callback(
         "/viewtopic\.php\?pid=([0-9]+)#p[0-9]+|viewtopic\.php\?pid=([0-9]+)/",
         function($matches) use ($dbFlarum) {
-            $pid = $matches[1];
-            if (isset($matches[2])) {
-                $pid = $matches[2];
-            }
+            $pid = isset($matches[2]) ? $matches[2] : $matches[1];
+
             $query = RunPreparedQuery($dbFlarum, [':id' => $pid], "SELECT number, discussion_id FROM posts WHERE id = :id");
             $info_id = $query->fetchAll(PDO::FETCH_ASSOC);
             $discussionId = intval($info_id[0]['discussion_id']);
