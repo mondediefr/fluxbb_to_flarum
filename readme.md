@@ -91,7 +91,7 @@ Example :
 # Create a ssh tunnel to your database hosting
 ssh user@domain.tld -p xxx -L 8888:localhost:3306
 
-# Export the dump
+# Export your fluxbb database dump
 mysqldump --host=127.0.0.1 \
   --protocol=tcp \
   --port=8888 \
@@ -182,7 +182,7 @@ To remove untagged images (after some builds), run :
 ./run clean
 ```
 
-To remove reset and remove all containers, run :
+To reset and remove all containers, run :
 
 ```bash
 ./run remove

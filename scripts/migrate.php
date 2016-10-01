@@ -65,7 +65,7 @@ include 'importer/topics-posts.php';
 include 'importer/groups.php';
 include 'importer/subscriptions.php';
 include 'importer/bans.php';
-include 'importer/fix.php';
+include 'importer/misc.php';
 
 $timestamp_fin = microtime(true);
 $diff = $timestamp_fin - $timestamp_debut;
