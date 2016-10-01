@@ -5,7 +5,7 @@ action=$1
 case "$action" in
   "migrate"|"update-bundle"|"fluxbb-db-init"|"flarum-db-init")
     docker run --rm -i \
-      --env-file $(pwd)/config/db.env \
+      --env-file $(pwd)/db.env \
       --link mariadb:mariadb \
       -v ${PATH_FLARUM_MIGRATION}/docker/flarum/:/flarum/app/assets \
       -v $(pwd)/scripts:/scripts migrator "$@"
