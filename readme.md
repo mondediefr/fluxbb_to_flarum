@@ -184,7 +184,9 @@ Migration logs are available in `scripts/logs/migrate.log`
 
 You can see the result of migration here : http://flarum.local
 
-### TextFormatter Bundle
+### Misc
+
+#### TextFormatter Bundle
 
 You can add custom TextFormatter rules in this file `scripts/createCustomBundle.php`
 
@@ -196,7 +198,7 @@ Then update the bundle with :
 [INFO] TextFormatter bundle updated !
 ```
 
-### Misc
+#### Docker
 
 To remove untagged images (after some builds), run :
 
