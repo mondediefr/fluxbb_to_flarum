@@ -49,6 +49,11 @@ if [ ! -d "/scripts/TextFormatter" ]; then
   git clone -q https://github.com/s9e/TextFormatter.git -b "${TEXTFORMATTER_VERSION}" /scripts/TextFormatter
 fi
 
+if [ ! -f "/scripts/composer.lock" ]; then
+  echo "[INFO] Install migration script dependencies"
+  composer install --working-dir=/scripts
+fi
+
 if [ -d "${AVATAR_PATH}" ]; then
   rm -rf "${AVATAR_PATH}/*"
 else
