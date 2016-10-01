@@ -72,7 +72,7 @@ server {
 
 #### 3 - Start the containers
 
-```docker
+```bash
 # Database first
 docker-compose up -d mariadb
 Creating mariadb
@@ -117,19 +117,21 @@ mysqldump --host=127.0.0.1 \
 
 #### 5 - Export fluxbb user's avatars
 
-```
+```bash
 scp -P xxx -r user@domain.tld:/path/to/fluxbb/avatars/folder/* scripts/avatars
 ```
 
 #### 6 - Export fluxbb smileys
 
-```
+```bash
 scp -P xxx -r user@domain.tld:/path/to/fluxbb/smileys/folder/* scripts/smileys
 ```
 
+Add your custom fluxbb smileys in `scripts/importer/smileys.php`
+
 #### 7 - Migration process
 
-```
+```bash
 ./run migrate
 
 [INFO] ------------------- STARTING MIGRATION PROCESS -------------------
@@ -166,7 +168,7 @@ You can add custom TextFormatter rules in this file `scripts/createCustomBundle.
 
 Then update the bundle with :
 
-```
+```bash
 ./run update-bundle
 
 [INFO] TextFormatter bundle updated !
@@ -176,13 +178,13 @@ Then update the bundle with :
 
 To remove untagged images (after some builds), run :
 
-```
+```bash
 ./run clean
 ```
 
 To remove reset and remove all containers, run :
 
-```
+```bash
 ./run remove
 ```
 
