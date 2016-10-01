@@ -1,0 +1,13 @@
+{
+    "name": "mondediefr/importer",
+    "require": {
+        "intervention/image": "^2.3",
+        "illuminate/support": "^5.3"
+    },
+    "authors": [
+        {
+            "name": "Magicalex",
+            "email": "magicalex@mondedie.fr"
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+action=$1
+
+case "$action" in
+  "migrate"|"update-bundle"|"fluxbb-db-init"|"flarum-db-init")
+    docker run --rm -i \
+      --env-file $(pwd)/config/db.env \
+      --link mariadb:mariadb \
+      -v ${PATH_FLARUM_MIGRATION}/docker/flarum/:/flarum/app/assets \
+      -v $(pwd)/scripts:/scripts migrator "$@"
+    ;;
+  "build")
+    docker build -t migrator $(pwd)
+    docker images | grep migrator
+    ;;
+  "remove")
+    docker-compose -f $(pwd)/docker-compose.yml stop
+    docker-compose -f $(pwd)/docker-compose.yml rm
+    ;;
+  "clean")
+    docker images --quiet --filter=dangling=true | xargs docker rmi
+    ;;
+  *)
+    echo "Usage : $0 migrate|update-bundle|fluxbb-db-init|flarum-db-init|build|remove|clean"
+    ;;
+esac
+
+exit 0

@@ -1,0 +1,41 @@
+nginx:
+  image: wonderfall/nginx
+  container_name: nginx
+  links:
+    - flarum:flarum
+  ports:
+    - "80:8000"
+  volumes:
+    - "${PATH_FLARUM_MIGRATION}/docker/nginx/sites-enabled:/sites-enabled"
+    - "${PATH_FLARUM_MIGRATION}/docker/nginx/log:/var/log/nginx"
+
+flarum:
+  image: mondedie/flarum
+  container_name: flarum
+  links:
+    - mariadb:mariadb
+  environment:
+    - DEBUG=true
+    - FORUM_URL=http://flarum.local/
+    - DB_PASS=277F9fqGEgyB
+    - MAIL_FROM=noreply@domain.tld
+    - MAIL_HOST=mail.domain.tld
+    - MAIL_PORT=587
+    - MAIL_USER=noreply@domain.tld
+    - MAIL_PASS=xxxxxxxxxxxxxx
+    - MAIL_ENCR=tls
+  volumes:
+    - "${PATH_FLARUM_MIGRATION}/docker/flarum:/flarum/app/assets"
+
+mariadb:
+  image: mariadb:10.1
+  container_name: mariadb
+  ports:
+    - "3306:3306"
+  volumes:
+    - "${PATH_FLARUM_MIGRATION}/docker/mysql/db:/var/lib/mysql"
+  environment:
+    - MYSQL_ROOT_PASSWORD=KthJ8k2DE4q3
+    - MYSQL_DATABASE=flarum
+    - MYSQL_USER=flarum
+    - MYSQL_PASSWORD=277F9fqGEgyB

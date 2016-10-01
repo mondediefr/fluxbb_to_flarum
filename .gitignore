@@ -1,0 +1,12 @@
+*.log
+*.sql
+scripts/TextFormatter
+scripts/TextCustomBundle/TextFormatter.php
+scripts/TextCustomBundle/Renderer_*.php
+docker
+vendor
+composer.lock
+*.jpg
+*.png
+*.gif
+*.jpeg
