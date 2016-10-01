@@ -175,7 +175,7 @@ $smileys = array(
 [INFO] ...
 [INFO] ...
 [INFO] ...
-[INFO] ----------------- END OF MIGRATION in 3 min 41 sec ---------------
+[INFO] ----------------- END OF MIGRATION (time: 3 min 41 sec) ---------------
 ```
 
 Migration logs are available in `scripts/logs/migrate.log`
@@ -210,6 +210,10 @@ To reset and remove all containers, run :
 
 ```bash
 ./run remove
+
+# Remove mount point data
+rm -rf $PATH_FLARUM_MIGRATION/docker/flarum/ \
+       $PATH_FLARUM_MIGRATION/docker/mysql/
 ```
 
 To restart all containers again : https://github.com/mondediefr/fluxbb_to_flarum#3---start-the-containers
