@@ -101,7 +101,7 @@ Example :
 # Create a ssh tunnel to your database hosting
 ssh user@domain.tld -p xxx -L 8888:localhost:3306
 
-# Export your fluxbb database dump
+# Export your fluxbb database dump in `scripts/sql/fluxbb_dump.sql` file
 mysqldump --host=127.0.0.1 \
   --protocol=tcp \
   --port=8888 \
@@ -119,19 +119,37 @@ mysqldump --host=127.0.0.1 \
 [INFO] done !
 ```
 
-#### 5 - Export fluxbb user's avatars
+#### 5 - Avatars importation
+
+Import all avatar images in `scripts/avatars` folder :
+
+Example :
 
 ```bash
 scp -P xxx -r user@domain.tld:/path/to/fluxbb/avatars/folder/* scripts/avatars
 ```
 
-#### 6 - Export fluxbb smileys
+#### 6 - Smileys importation
+
+Import all smileys images in `scripts/smileys` folder :
+
+Example :
 
 ```bash
 scp -P xxx -r user@domain.tld:/path/to/fluxbb/smileys/folder/* scripts/smileys
 ```
 
-Add your custom fluxbb smileys in `scripts/importer/smileys.php`
+Add your custom fluxbb smileys in `scripts/importer/smileys.php` like this :
+
+```php
+<?php
+
+$smileys = array(
+    array("smile.png",":)"),
+    array("neutral.png",":|"),
+    ...
+);
+```
 
 #### 7 - Migration process
 
