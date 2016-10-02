@@ -47,10 +47,10 @@ function ConvertTimestampToDatetime($timestamp) {
     return date("Y-m-d H:i:s", $timestamp);
 }
 
-function Slugify($text) {
+function Slugify($text, $options=null) {
 
     global $slugify;
-    $slug = $slugify->slugify($text);
+    $slug = $slugify->slugify($text, $options);
 
     if(!empty($slug)) {
         return $slug;
@@ -158,7 +158,7 @@ function GetRandomColor() {
 }
 
 function GetUserID($db, $username) {
-    if(!preg_match('/^[a-zA-Z0-9-]+$/', $username)) {
+    if(!preg_match('/^[a-zA-Z0-9-_]+$/', $username)) {
         $username = Slugify($username);
     }
     $query = RunPreparedQuery($db, [':username' => $username], "SELECT id FROM users WHERE username=:username");

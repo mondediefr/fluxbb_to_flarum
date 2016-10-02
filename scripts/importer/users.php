@@ -28,9 +28,9 @@ foreach ($users as $user) {
     if(!IsNullOrEmptyString($user['email'])) {
 
         // The username must contain only letters, numbers and dashes.
-        if(!preg_match('/^[a-zA-Z0-9-]+$/', $user['username'])) {
+        if(!preg_match('/^[a-zA-Z0-9-_]+$/', $user['username'])) {
 
-            $username = Slugify($user['username'], $slugify);
+            $username = Slugify($user['username']); // ['lowercase' => false] => issue : https://github.com/cocur/slugify/issues/139
             $query = RunPreparedQuery($dbFluxbb, [':username' => $username], "SELECT id FROM {$dbFluxbbPrefix}users WHERE BINARY username=:username");
             $row = $query->fetch(PDO::FETCH_ASSOC);
 
