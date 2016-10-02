@@ -41,7 +41,7 @@ foreach ($users as $user) {
             } else {
                 $usersCleaned++;
                 WriteInLog("/!\ User '" . $user['username'] . "' cleaned (incorrect format). New nickname : '" . $username . "'", "WARN");
-                #SendNotificationToUser($user['email'], $user['username'], $username);
+                //SendNotificationToUser($user['email'], $user['username'], $username);
             }
 
         } else {

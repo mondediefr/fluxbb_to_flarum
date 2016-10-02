@@ -19,6 +19,7 @@ function RunQuery($db, $sql) {
         WriteInLog($e, 'ERROR');
         die("/!\ An error occurred while executing the query");
     }
+
     return $query;
 }
 
@@ -30,17 +31,12 @@ function RunPreparedQuery($db, $dataArray, $sql) {
         WriteInLog($e, 'ERROR');
         die("/!\ An error occurred while executing the prepared query");
     }
+
     return $query;
 }
 
 function IsNullOrEmptyString($string) {
     return (!isset($string) || trim($string) === '');
-}
-
-function RemoveSpaces($string) {
-    $string = str_replace(' ', '', $string);
-    $string = preg_replace('/\s+/', '', $string);
-    return $string;
 }
 
 function ConvertTimestampToDatetime($timestamp) {
@@ -157,12 +153,17 @@ function GetRandomColor() {
     return '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
 }
 
-function GetUserID($db, $username) {
+function GetUserID($username) {
+
+    global $dbFlarum;
+
     if(!preg_match('/^[a-zA-Z0-9-_]+$/', $username)) {
-        $username = Slugify($username);
+        $username = Slugify($username, '');
     }
-    $query = RunPreparedQuery($db, [':username' => $username], "SELECT id FROM users WHERE username=:username");
+
+    $query = RunPreparedQuery($dbFlarum, [':username' => $username], "SELECT id FROM users WHERE username = :username");
     $row = $query->fetch(PDO::FETCH_ASSOC);
+
     return $row['id'];
 }
 
@@ -176,7 +177,7 @@ function SendNotificationToUser($address, $username, $slug) {
         $body = preg_replace('/{SLUG}/', $slug, $body);
 
         $mail = new PHPMailer;
-     // $mail->SMTPDebug = 3;
+        // $mail->SMTPDebug = 3;
         $mail->isSMTP();
         $mail->SMTPAuth = true;
         $mail->Host = $mailHost;

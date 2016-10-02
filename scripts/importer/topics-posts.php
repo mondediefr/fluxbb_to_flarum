@@ -15,7 +15,7 @@ $postsTruncate  = 0;
 
 foreach ($topics as $topic) {
 
-    $startUserId = GetUserID($dbFlarum, $topic['poster']);
+    $startUserId = GetUserID($topic['poster']);
 
     if(!IsNullOrEmptyString($topic['moved_to'])) {
         $topicsIgnored++;
@@ -42,7 +42,7 @@ foreach ($topics as $topic) {
     foreach ($posts as $post) {
 
         $currentPostNumber++;
-        $userId = GetUserID($dbFlarum, $post['poster']);
+        $userId = $post['poster_id'];
 
         if(!in_array($userId, $participantsList))
             $participantsList[] = $userId;
@@ -60,7 +60,8 @@ foreach ($topics as $topic) {
         if (strlen($content) > 65534) {
             WriteInLog("/!\ The post id:'" . $post['id'] . "' is too long, more than 65535 characters", "WARN");
             // To avoid the error 500 (Internal Server Error)
-            $content = TextFormatter::parse('This post was erased because the content exceed 65535 characters.');
+            $content = TextFormatter::parse('*This post was erased because the content exceed 65535 characters.*
+                                             ***Message by fluxbb_to_flarum importer***');
             $postsTruncate++;
         }
 
@@ -72,10 +73,10 @@ foreach ($topics as $topic) {
             ':user_id' => $userId,
             ':type' => 'comment',
             ':content' => $content,
-            ':edit_time' => ($post['edited']) ? ConvertTimestampToDatetime(intval($post['edited'])) : null,
-            ':edit_user_id' => ($post['edited_by']) ? GetUserID($dbFlarum, $post['edited_by']) : null,
+            ':edit_time' => $post['edited'] ? ConvertTimestampToDatetime(intval($post['edited'])) : null,
+            ':edit_user_id' => $post['edited_by'] ? GetUserID($post['edited_by']) : null,
             ':is_approved' => 1,
-            ':ip_address' => !empty($post['poster_ip']) ? $post['poster_ip']:null
+            ':ip_address' => !empty($post['poster_ip']) ? $post['poster_ip'] : null
         ];
 
         $query = RunPreparedQuery($dbFlarum, $postData, "INSERT INTO posts(id,discussion_id,number,time,user_id,type,content,edit_time,edit_user_id,ip_address,is_approved) VALUES(:id,:discussion_id,:number,:time,:user_id,:type,:content,:edit_time,:edit_user_id,:ip_address,:is_approved)");
@@ -92,7 +93,7 @@ foreach ($topics as $topic) {
         ':start_user_id'      => $startUserId,                                            // ID of the user who created the topic
         ':start_post_id'      => $topic['first_post_id'],                                 // First post ID
         ':last_time'          => ConvertTimestampToDatetime(intval($topic['last_post'])), // Last post date
-        ':last_user_id'       => GetUserID($dbFlarum, $topic['last_poster']),             // ID of the user who posted last
+        ':last_user_id'       => GetUserID($topic['last_poster']),                        // ID of the user who posted last
         ':last_post_id'       => intval($topic['last_post_id']),                          // Last post ID
         ':last_post_number'   => $totalPostsInDiscussion,                                 // Index of the last element of the topic
         ':slug'               => Slugify($topic['subject']),                              // Topic url slug part (human-readable keywords)

@@ -1,6 +1,6 @@
 <?php
 
-$timestamp_debut = microtime(true);
+$timestamp_start = microtime(true);
 
 require 'vendor/autoload.php';
 include 'TextCustomBundle/TextFormatter.php';
@@ -32,12 +32,12 @@ $dbFlarumName   = trim($dbFlarumName);
 $dbFlarumPass   = trim($dbFlarumPass);
 $dbFluxbbPrefix = trim($dbFluxbbPrefix);
 
-$mailFrom=trim($mailFrom);
-$mailHost=trim($mailHost);
-$mailPort=trim($mailPort);
-$mailEncr=trim($mailEncr);
-$mailUser=trim($mailUser);
-$mailPass=trim($mailPass);
+$mailFrom = trim($mailFrom);
+$mailHost = trim($mailHost);
+$mailPort = trim($mailPort);
+$mailEncr = trim($mailEncr);
+$mailUser = trim($mailUser);
+$mailPass = trim($mailPass);
 
 WriteInLog("------------------- STARTING MIGRATION PROCESS -------------------");
 
@@ -73,8 +73,8 @@ include 'importer/subscriptions.php';
 include 'importer/bans.php';
 include 'importer/misc.php';
 
-$timestamp_fin = microtime(true);
-$diff = $timestamp_fin - $timestamp_debut;
+$timestamp_end = microtime(true);
+$diff = $timestamp_end - $timestamp_start;
 $min = floor($diff / 60);
 $sec = floor($diff - $min * 60);
 

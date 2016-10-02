@@ -14,7 +14,7 @@ $bansIgnored = 0;
 
 foreach ($bans as $ban) {
 
-    $userId = GetUserID($dbFlarum, $ban['username']);
+    $userId = GetUserID($ban['username']);
 
     if(IsNullOrEmptyString($userId)) {
         $bansIgnored++;
@@ -25,10 +25,10 @@ foreach ($bans as $ban) {
     $duration = ($ban['expire']) ? ConvertTimestampToDatetime(intval($ban['expire'])) : date("Y-m-d H:i:s", strtotime('+50 years'));
 
     $query = RunPreparedQuery($dbFlarum, [
-        ':id' => userId,
+        ':id' => $userId,
         ':email' => $ban['email'],
         ':suspend_until' => $duration
-    ], "UPDATE users SET suspend_until=:suspend_until WHERE id=:id OR email=:email");
+    ], "UPDATE users SET suspend_until = :suspend_until WHERE id = :id OR email = :email");
 
     $bansMigrated += $query->rowCount();
 
