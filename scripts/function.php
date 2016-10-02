@@ -158,7 +158,7 @@ function GetRandomColor() {
 
 function GetUserID($db, $username, $slugify) {
     if(!preg_match('/^[a-zA-Z0-9-]+$/', $username)) {
-        $username = Slugify($user['username'], $slugify);
+        $username = Slugify($username, $slugify);
     }
     $query = RunPreparedQuery($db, [':username' => $username], "SELECT id FROM users WHERE username=:username");
     $row = $query->fetch(PDO::FETCH_ASSOC);
