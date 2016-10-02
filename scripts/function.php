@@ -47,8 +47,9 @@ function ConvertTimestampToDatetime($timestamp) {
     return date("Y-m-d H:i:s", $timestamp);
 }
 
-function Slugify($text, $slugify) {
+function Slugify($text) {
 
+    global $slugify;
     $slug = $slugify->slugify($text);
 
     if(!empty($slug)) {
@@ -100,7 +101,7 @@ function ReplaceUnsupportedMarks($text) {
     return $text;
 }
 
-function ConvertLinkFluxbb($text, $slugify) {
+function ConvertLinkFluxbb($text) {
 
     global $dbFlarum, $dbFluxbb, $dbFluxbbPrefix;
 
@@ -134,7 +135,7 @@ function ConvertLinkFluxbb($text, $slugify) {
     // - https://domain.tld/viewforum.php?id=xxx
     $text = preg_replace_callback(
         "/viewforum\.php\?id=([0-9]+)&p=[0-9]+|viewforum\.php\?id=([0-9]+)/",
-        function($matches) use ($dbFluxbb, $dbFluxbbPrefix, $slugify) {
+        function($matches) use ($dbFluxbb, $dbFluxbbPrefix) {
             $id = $matches[1];
             if (isset($matches[2])) {
                 $id = $matches[2];
@@ -142,7 +143,7 @@ function ConvertLinkFluxbb($text, $slugify) {
             $query = RunPreparedQuery($dbFluxbb, [':id' => $id], "SELECT forum_name FROM ${dbFluxbbPrefix}forums WHERE id = :id");
             $info_slug = $query->fetchAll(PDO::FETCH_ASSOC);
             $slug = $info_slug[0]['forum_name'];
-            $slug = Slugify($slug, $slugify);
+            $slug = Slugify($slug);
 
             return "t/$slug";
         },
@@ -156,9 +157,9 @@ function GetRandomColor() {
     return '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
 }
 
-function GetUserID($db, $username, $slugify) {
+function GetUserID($db, $username) {
     if(!preg_match('/^[a-zA-Z0-9-]+$/', $username)) {
-        $username = Slugify($username, $slugify);
+        $username = Slugify($username);
     }
     $query = RunPreparedQuery($db, [':username' => $username], "SELECT id FROM users WHERE username=:username");
     $row = $query->fetch(PDO::FETCH_ASSOC);

@@ -15,7 +15,7 @@ foreach ($categories as $category) {
     $categorieData = [
         ':id' => $category['id'],
         ':name' => $category['cat_name'],
-        ':slug' => Slugify($category['cat_name'], $slugify),
+        ':slug' => Slugify($category['cat_name']),
         ':color' => GetRandomColor(),
         ':position' => intval($category['disp_position'])
     ];

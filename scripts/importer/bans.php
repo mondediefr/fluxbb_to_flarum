@@ -14,7 +14,7 @@ $bansIgnored = 0;
 
 foreach ($bans as $ban) {
 
-    $userId = GetUserID($dbFlarum, $ban['username'], $slugify);
+    $userId = GetUserID($dbFlarum, $ban['username']);
 
     if(IsNullOrEmptyString($userId)) {
         $bansIgnored++;
