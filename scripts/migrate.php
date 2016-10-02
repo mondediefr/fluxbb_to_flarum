@@ -32,6 +32,13 @@ $dbFlarumName   = trim($dbFlarumName);
 $dbFlarumPass   = trim($dbFlarumPass);
 $dbFluxbbPrefix = trim($dbFluxbbPrefix);
 
+$mailFrom=trim($mailFrom);
+$mailHost=trim($mailHost);
+$mailPort=trim($mailPort);
+$mailEncr=trim($mailEncr);
+$mailUser=trim($mailUser);
+$mailPass=trim($mailPass);
+
 WriteInLog("------------------- STARTING MIGRATION PROCESS -------------------");
 
 try {

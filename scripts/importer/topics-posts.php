@@ -15,7 +15,7 @@ $postsTruncate  = 0;
 
 foreach ($topics as $topic) {
 
-    $startUserId = GetUserID($dbFlarum, $topic['poster']);
+    $startUserId = GetUserID($dbFlarum, $topic['poster'], $slugify);
 
     if(!IsNullOrEmptyString($topic['moved_to'])) {
         $topicsIgnored++;
@@ -42,7 +42,7 @@ foreach ($topics as $topic) {
     foreach ($posts as $post) {
 
         $currentPostNumber++;
-        $userId = GetUserID($dbFlarum, $post['poster']);
+        $userId = GetUserID($dbFlarum, $post['poster'], $slugify);
 
         if(!in_array($userId, $participantsList))
             $participantsList[] = $userId;
@@ -73,7 +73,7 @@ foreach ($topics as $topic) {
             ':type' => 'comment',
             ':content' => $content,
             ':edit_time' => ($post['edited']) ? ConvertTimestampToDatetime(intval($post['edited'])) : null,
-            ':edit_user_id' => ($post['edited_by']) ? GetUserID($dbFlarum, $post['edited_by']) : null,
+            ':edit_user_id' => ($post['edited_by']) ? GetUserID($dbFlarum, $post['edited_by'], $slugify) : null,
             ':is_approved' => 1,
             ':ip_address' => !empty($post['poster_ip']) ? $post['poster_ip']:null
         ];
@@ -92,10 +92,10 @@ foreach ($topics as $topic) {
         ':start_user_id'      => $startUserId,                                            // ID of the user who created the topic
         ':start_post_id'      => $topic['first_post_id'],                                 // First post ID
         ':last_time'          => ConvertTimestampToDatetime(intval($topic['last_post'])), // Last post date
-        ':last_user_id'       => GetUserID($dbFlarum, $topic['last_poster']),             // ID of the user who posted last
+        ':last_user_id'       => GetUserID($dbFlarum, $topic['last_poster'], $slugify),   // ID of the user who posted last
         ':last_post_id'       => intval($topic['last_post_id']),                          // Last post ID
         ':last_post_number'   => $totalPostsInDiscussion,                                 // Index of the last element of the topic
-        ':slug'               => Slugify($topic['subject']),                              // Topic url slug part (human-readable keywords)
+        ':slug'               => Slugify($topic['subject'], $slugify),                    // Topic url slug part (human-readable keywords)
         ':is_approved'        => 1,                                                       // Approve all migrated topics
         ':is_locked'          => intval($topic['closed']),                                // Is the topic locked ?
         ':is_sticky'          => intval($topic['sticky']),                                // Is the topic pinned ?

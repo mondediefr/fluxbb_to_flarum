@@ -43,6 +43,13 @@ git clone https://github.com/mondediefr/fluxbb_to_flarum.git && cd fluxbb_to_fla
 ./run build
 ```
 
+Edit (if needed) and copy the `.env.sample` file :
+
+```
+vim .env.sample
+cp .env.sample .env
+```
+
 #### 2 - Add a new flarum vhost for nginx
 
 ```bash
@@ -144,14 +151,49 @@ Add your custom fluxbb smileys in `scripts/importer/smileys.php` like this :
 ```php
 <?php
 
-$smileys = array(
-    array("smile.png",":)"),
-    array("neutral.png",":|"),
+$smileys = [
+    ["smile.png",":)"],
+    ["neutral.png",":|"],
     ...
-);
+];
 ```
 
-#### 7 - Migration process
+#### 7 - Usernames format
+
+Usernames must contain only letters, numbers and dashes. If an account doesn't match this format, the script
+clean it and send an email to notify account's owner.
+
+You must add your email provider settings in `.env` file in order to send notifications :
+
+```
+MAIL_FROM=noreply@domain.tld
+MAIL_HOST=mail.domain.tld
+MAIL_PORT=587
+MAIL_ENCR=tls
+MAIL_USER=noreply@domain.tld
+MAIL_PASS=xxxxx
+```
+
+Edit `scripts/mail/title.txt.sample` and `scripts/mail/body.html.sample` files at your convenience, then :
+
+```bash
+cp scripts/mail/title.txt.sample scripts/mail/title.txt
+cp scripts/mail/body.html.sample scripts/mail/body.html
+```
+
+If you have your own mail server, don't forget to apply rate limiting to
+avoid **421** error (with gmail, outlook...etc) when sending bulk emails.
+
+Example with postfix :
+
+```
+# /etc/postfix/main.cf
+
+# It specifies a delay (1 second) between deliveries
+default_destination_rate_delay = 1s
+```
+
+#### 8 - Migration process
 
 ```bash
 ./run migrate
@@ -180,7 +222,7 @@ $smileys = array(
 
 Migration logs are available in `scripts/logs/migrate.log`
 
-#### 8 - Done, congratulation ! :tada:
+#### 9 - Done, congratulation ! :tada:
 
 You can see the result of migration here : http://flarum.local
 
@@ -224,6 +266,8 @@ To restart all containers again : https://github.com/mondediefr/fluxbb_to_flarum
 - https://github.com/composer/composer : PHP dependencies manager
 - https://github.com/Intervention/image : PHP image handling and manipulation library
 - https://github.com/illuminate/support : Illuminate support components
+- https://github.com/cocur/slugify : String to slug converter
+- https://github.com/PHPMailer/PHPMailer : Email sending library for PHP
 
 ### Contribute
 

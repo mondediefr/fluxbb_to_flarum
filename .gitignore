@@ -3,6 +3,8 @@
 scripts/TextFormatter
 scripts/TextCustomBundle/TextFormatter.php
 scripts/TextCustomBundle/Renderer_*.php
+scripts/mail/body.html
+scripts/mail/title.txt
 docker
 vendor
 composer.lock
@@ -10,3 +12,4 @@ composer.lock
 *.png
 *.gif
 *.jpeg
+.env

@@ -3,6 +3,9 @@
 // FUNCTIONS
 // ------------------------------
 
+use Cocur\Slugify\Slugify;
+$slugify = new Slugify();
+
 function WriteInLog($message, $type=INFO) {
     $line = "[$type] $message";
     echo "$line\n";
@@ -44,21 +47,30 @@ function ConvertTimestampToDatetime($timestamp) {
     return date("Y-m-d H:i:s", $timestamp);
 }
 
-function Slugify($text) {
-    $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-    $text = trim($text, '-');
-    // $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text); --> doesn't work :(
-    $unwanted = ['Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
-                      'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
-                      'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
-                      'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
-                      'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y'];
-    $text = strtr($text, $unwanted);
-    $text = strtolower($text);
-    $text = preg_replace('~-+~', '-', $text);
-    if(empty($text))
-        return bin2hex(random_bytes(5));
-    return $text;
+function Slugify($text, $slugify) {
+
+    $slug = $slugify->slugify($text);
+
+    if(!empty($slug)) {
+        return $slug;
+    } else {
+        // if slugify librairie wipes all characters, fallback to the second method
+        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+        $text = trim($text, '-');
+        $unwanted = [
+            'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+            'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
+            'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
+            'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
+            'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y'
+        ];
+        $text = strtr($text, $unwanted);
+        $text = strtolower($text);
+        $text = preg_replace('~-+~', '-', $text);
+        // if empty again, fallback to random slug...
+        return (empty($text)) ? bin2hex(random_bytes(5)) : $text;
+    }
+
 }
 
 function ReplaceUnsupportedMarks($text) {
@@ -88,7 +100,7 @@ function ReplaceUnsupportedMarks($text) {
     return $text;
 }
 
-function ConvertLinkFluxbb($text) {
+function ConvertLinkFluxbb($text, $slugify) {
 
     global $dbFlarum, $dbFluxbb, $dbFluxbbPrefix;
 
@@ -122,7 +134,7 @@ function ConvertLinkFluxbb($text) {
     // - https://domain.tld/viewforum.php?id=xxx
     $text = preg_replace_callback(
         "/viewforum\.php\?id=([0-9]+)&p=[0-9]+|viewforum\.php\?id=([0-9]+)/",
-        function($matches) use ($dbFluxbb, $dbFluxbbPrefix) {
+        function($matches) use ($dbFluxbb, $dbFluxbbPrefix, $slugify) {
             $id = $matches[1];
             if (isset($matches[2])) {
                 $id = $matches[2];
@@ -130,7 +142,7 @@ function ConvertLinkFluxbb($text) {
             $query = RunPreparedQuery($dbFluxbb, [':id' => $id], "SELECT forum_name FROM ${dbFluxbbPrefix}forums WHERE id = :id");
             $info_slug = $query->fetchAll(PDO::FETCH_ASSOC);
             $slug = $info_slug[0]['forum_name'];
-            $slug = Slugify($slug);
+            $slug = Slugify($slug, $slugify);
 
             return "t/$slug";
         },
@@ -144,11 +156,43 @@ function GetRandomColor() {
     return '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
 }
 
-function GetUserID($db, $username) {
-    if(preg_match('/\s/', $username) || strpos($username, ' ')) {
-        $username = RemoveSpaces($username);
+function GetUserID($db, $username, $slugify) {
+    if(!preg_match('/^[a-zA-Z0-9-]+$/', $username)) {
+        $username = Slugify($user['username'], $slugify);
     }
     $query = RunPreparedQuery($db, [':username' => $username], "SELECT id FROM users WHERE username=:username");
     $row = $query->fetch(PDO::FETCH_ASSOC);
     return $row['id'];
+}
+
+function SendNotificationToUser($address, $username, $slug) {
+
+    global $mailFrom, $mailHost, $mailPort, $mailEncr, $mailUser, $mailPass;
+
+    if($mailHost) {
+        $body = file_get_contents("/scripts/mail/body.html");
+        $body = preg_replace('/{USERNAME}/', $username, $body);
+        $body = preg_replace('/{SLUG}/', $slug, $body);
+
+        $mail = new PHPMailer;
+     // $mail->SMTPDebug = 3;
+        $mail->isSMTP();
+        $mail->SMTPAuth = true;
+        $mail->Host = $mailHost;
+        $mail->Username = $mailUser;
+        $mail->Password = $mailPass;
+        $mail->SMTPSecure = $mailEncr;
+        $mail->Port = $mailPort;
+        $mail->setFrom($mailFrom, 'Flarum migration script');
+        $mail->addAddress($address);
+        $mail->isHTML(true);
+        $mail->CharSet = 'UTF-8';
+        $mail->Subject = file_get_contents("/scripts/mail/title.txt");
+        $mail->Body = $body;
+        $mail->AltBody = "To view the message, please use an HTML compatible email viewer!";
+
+        if(!$mail->send()) {
+            WriteInLog("Unable to send mail notification to ${address} . Error : " . $mail->ErrorInfo, "ERR!");
+        }
+    }
 }

@@ -27,15 +27,23 @@ foreach ($users as $user) {
 
     if(!IsNullOrEmptyString($user['email'])) {
 
-        // TODO : Check that the username is only alphanumeric.
-        // The username must contain only letters, numbers and hyphens.
-        // If the username doesn't match this format, clean it and then send an email
-        // to notify account's owner.
+        // The username must contain only letters, numbers and dashes.
+        if(!preg_match('/^[a-zA-Z0-9-]+$/', $user['username'])) {
 
-        if(preg_match('/\s/', $user['username']) || strpos($user['username'], ' ')) {
-            $username = RemoveSpaces($user['username']);
-            $usersCleaned++;
-            WriteInLog("/!\ User '" . $user['username'] . "' cleaned (incorrect format). New nickname : '" . $username . "'", "WARN");
+            $username = Slugify($user['username'], $slugify);
+            $query = RunPreparedQuery($dbFluxbb, [':username' => $username], "SELECT id FROM {$dbFluxbbPrefix}users WHERE BINARY username=:username");
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+
+            if($row['id']) {
+                $usersIgnored++;
+                WriteInLog("/!\ Unable to clean username '" . $user['username'] . "', try to fix this account manually. Proposed nickname : '" . $username . "' (already exists in fluxbb database)", "ERR!");
+                continue;
+            } else {
+                $usersCleaned++;
+                WriteInLog("/!\ User '" . $user['username'] . "' cleaned (incorrect format). New nickname : '" . $username . "'", "WARN");
+                #SendNotificationToUser($user['email'], $user['username'], $username);
+            }
+
         } else {
             $username = $user['username'];
         }
@@ -103,7 +111,7 @@ foreach ($users as $user) {
 
 WriteInLog("DONE. Results : ");
 WriteInLog("> " . $usersMigrated . " user(s) migrated successfully");
-WriteInLog("> " . $usersIgnored . " user(s) ignored (guest account + those without mail address)");
+WriteInLog("> " . $usersIgnored . " user(s) ignored (guest account + those without mail address + accounts not cleaned)");
 WriteInLog("> " . $usersCleaned . " user(s) cleaned (incorrect format)");
 WriteInLog("> " . $signatureMigrated . " signature(s) cleaned and migrated successfully");
 WriteInLog("> " . $avatarMigrated . " avatar(s) migrated successfully");

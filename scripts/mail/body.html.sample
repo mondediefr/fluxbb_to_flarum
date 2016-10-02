@@ -1,0 +1,24 @@
+<p>Hi {USERNAME},</p>
+
+<p>
+domain.tld forum is currently being migrated to a new open-source platform named <a href="http://flarum.org/">Flarum</a>.
+Our system has detected that your username didn't match the format required by Flarum, which forced the username
+to only contain letters, numbers and dashes.
+</p>
+
+<p>
+Your current username is : <strong>{USERNAME}</strong><br>
+Username suggested by our system : <strong>{SLUG}</strong>
+</p>
+
+<p>
+In case you didn't approve this change, sending us an email to <strong>contact@domain.tld</strong> to find a new username for your account.
+We will notify you when the change will be effective.
+</p>
+
+<p>
+Best regards,<br>
+domain.tld STAFF
+</p>
+
+<p><a href="https://domain.tld/">https://domain.tld/</a></p>

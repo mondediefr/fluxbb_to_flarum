@@ -6,8 +6,8 @@ SQL_PATH="/scripts/sql"
 AVATAR_PATH="/flarum/app/assets/avatars"
 SMILEYS_PATH="/flarum/app/assets/images/smileys"
 
-# Databases authentification params
-DB_PARAMS=" \
+# Databases and mail authentification params
+ENV_PARAMS=" \
   dbHost=${DB_HOST} \
   &dbFluxbbUser=${DB_FLUXBB_USER} \
   &dbFluxbbName=${DB_FLUXBB_NAME} \
@@ -15,7 +15,13 @@ DB_PARAMS=" \
   &dbFlarumUser=${DB_FLARUM_USER} \
   &dbFlarumName=${DB_FLARUM_NAME} \
   &dbFlarumPass=${DB_FLARUM_PASS} \
-  &dbFluxbbPrefix=${DB_FLUXBB_PREFIX}
+  &dbFluxbbPrefix=${DB_FLUXBB_PREFIX} \
+  &mailFrom=${MAIL_FROM} \
+  &mailHost=${MAIL_HOST} \
+  &mailPort=${MAIL_PORT} \
+  &mailEncr=${MAIL_ENCR} \
+  &mailUser=${MAIL_USER} \
+  &mailPass=${MAIL_PASS}
 "
 
 if [ -f "${SQL_PATH}/fluxbb_init.sql" ]; then
@@ -70,7 +76,7 @@ fi
 
 case "$action" in
   "migrate")
-    php7 -f /scripts/migrate.php -- "$DB_PARAMS"
+    php7 -f /scripts/migrate.php -- "$ENV_PARAMS"
     ;;
   "update-bundle")
     rm -f /scripts/TextCustomBundle/Renderer_*.php

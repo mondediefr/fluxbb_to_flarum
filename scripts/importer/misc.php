@@ -92,7 +92,7 @@ foreach ($posts as $post) {
     $postId = $post['id'];
 
     $content = s9e\TextFormatter\Unparser::unparse($content);
-    $content = ConvertLinkFluxbb($content);
+    $content = ConvertLinkFluxbb($content, $slugify);
     $content = TextFormatter::parse($content);
 
     $postData = [
