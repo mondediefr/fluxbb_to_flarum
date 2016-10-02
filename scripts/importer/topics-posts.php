@@ -1,12 +1,12 @@
 <?php
 
-WriteInLog("########################################");
-WriteInLog("### [4/8] Topics and posts migration ###");
-WriteInLog("########################################");
+WriteInLog('########################################');
+WriteInLog('### [4/8] Topics and posts migration ###');
+WriteInLog('########################################');
 
 $query = RunQuery($dbFluxbb, "SELECT * FROM ${dbFluxbbPrefix}topics");
 $topics = $query->fetchAll(PDO::FETCH_ASSOC);
-WriteInLog("Migrating " . $query->rowCount() . " topics...");
+WriteInLog('Migrating ' . $query->rowCount() . ' topics...');
 
 $topicsMigrated = 0;
 $postsMigrated  = 0;
@@ -50,7 +50,7 @@ foreach ($topics as $topic) {
         $content = $post['message'];
 
         foreach($smileys as $smiley){
-            $quotedSmiley = preg_quote($smiley[1], "#");
+            $quotedSmiley = preg_quote($smiley[1], '#');
             $match = '#(?<=\s|^)(' . $quotedSmiley .')(?=\s|$)#'; // a space is required before and after the pattern
             $content = preg_replace($match, '[img]/assets/images/smileys/'.$smiley[0].'[/img]', $content);
         }
@@ -58,10 +58,9 @@ foreach ($topics as $topic) {
         $content = TextFormatter::parse(ReplaceUnsupportedMarks($content));
 
         if (strlen($content) > 65534) {
-            WriteInLog("/!\ The post id:'" . $post['id'] . "' is too long, more than 65535 characters", "WARN");
+            WriteInLog("/!\ The post id:'" . $post['id'] . "' is too long, more than 65535 characters", 'ERR!');
             // To avoid the error 500 (Internal Server Error)
-            $content = TextFormatter::parse('*This post was erased because the content exceed 65535 characters.*
-                                             ***Message by fluxbb_to_flarum importer***');
+            $content = TextFormatter::parse('This post was erased because the content exceed 65535 characters. Message by fluxbb_to_flarum importer');
             $postsTruncate++;
         }
 
@@ -79,7 +78,7 @@ foreach ($topics as $topic) {
             ':ip_address' => !empty($post['poster_ip']) ? $post['poster_ip'] : null
         ];
 
-        $query = RunPreparedQuery($dbFlarum, $postData, "INSERT INTO posts(id,discussion_id,number,time,user_id,type,content,edit_time,edit_user_id,ip_address,is_approved) VALUES(:id,:discussion_id,:number,:time,:user_id,:type,:content,:edit_time,:edit_user_id,:ip_address,:is_approved)");
+        $query = RunPreparedQuery($dbFlarum, $postData, 'INSERT INTO posts(id,discussion_id,number,time,user_id,type,content,edit_time,edit_user_id,ip_address,is_approved) VALUES(:id,:discussion_id,:number,:time,:user_id,:type,:content,:edit_time,:edit_user_id,:ip_address,:is_approved)');
         $postsMigrated += $query->rowCount();
     }
 
@@ -102,7 +101,7 @@ foreach ($topics as $topic) {
         ':is_sticky'          => intval($topic['sticky']),                                // Is the topic pinned ?
     ];
 
-    $query = RunPreparedQuery($dbFlarum, $topicData, "INSERT INTO discussions(id,title,comments_count,participants_count,number_index,start_time,start_user_id,start_post_id,last_time,last_user_id,last_post_id,last_post_number,slug,is_approved,is_locked,is_sticky) VALUES(:id,:title,:comments_count,:participants_count,:number_index,:start_time,:start_user_id,:start_post_id,:last_time,:last_user_id,:last_post_id,:last_post_number,:slug,:is_approved,:is_locked,:is_sticky)");
+    $query = RunPreparedQuery($dbFlarum, $topicData, 'INSERT INTO discussions(id,title,comments_count,participants_count,number_index,start_time,start_user_id,start_post_id,last_time,last_user_id,last_post_id,last_post_number,slug,is_approved,is_locked,is_sticky) VALUES(:id,:title,:comments_count,:participants_count,:number_index,:start_time,:start_user_id,:start_post_id,:last_time,:last_user_id,:last_post_id,:last_post_number,:slug,:is_approved,:is_locked,:is_sticky)');
     $topicsMigrated += $query->rowCount();
 
     //
@@ -116,18 +115,18 @@ foreach ($topics as $topic) {
     RunPreparedQuery($dbFlarum, [
         ':discussion_id' => $topic['id'],
         ':tag_id' => $row['cat_id']
-    ], "INSERT INTO discussions_tags(discussion_id, tag_id) VALUES(:discussion_id, :tag_id)");
+    ], 'INSERT INTO discussions_tags(discussion_id, tag_id) VALUES(:discussion_id, :tag_id)');
 
     // Link the topic with a secondary tag (fluxbb subcategory)
     RunPreparedQuery($dbFlarum, [
         ':discussion_id' => $topic['id'],
         ':tag_id' => $forumsTagsArray[$topic['forum_id']]
-    ], "INSERT INTO discussions_tags(discussion_id, tag_id) VALUES(:discussion_id, :tag_id)");
+    ], 'INSERT INTO discussions_tags(discussion_id, tag_id) VALUES(:discussion_id, :tag_id)');
 
 }
 
-WriteInLog("DONE. Results : ");
-WriteInLog("> " . $topicsMigrated . " topic(s) migrated successfully");
-WriteInLog("> " . $postsMigrated . " post(s) migrated successfully");
-WriteInLog("> " . $topicsIgnored . " topic(s) ignored (moved topics)");
-WriteInLog("> " . $postsTruncate . " topic(s) truncated (longer than 65535 characters)");
+WriteInLog('DONE. Results : ');
+WriteInLog("> $topicsMigrated topic(s) migrated successfully", 'SUCCES');
+WriteInLog("> $postsMigrated post(s) migrated successfully", 'SUCCES');
+WriteInLog("> $topicsIgnored topic(s) ignored (moved topics)", 'SUCCES');
+WriteInLog("> $postsTruncate topic(s) truncated (longer than 65535 characters)", 'SUCCES');

@@ -1,23 +1,23 @@
 <?php
 
-WriteInLog("###########################");
-WriteInLog("### [8/8] Miscellaneous ###");
-WriteInLog("###########################");
+WriteInLog('###########################');
+WriteInLog('### [8/8] Miscellaneous ###');
+WriteInLog('###########################');
 
-$query = RunQuery($dbFlarum, "SELECT id FROM users");
+$query = RunQuery($dbFlarum, 'SELECT id FROM users');
 $users = $query->fetchAll(PDO::FETCH_ASSOC);
 
-WriteInLog("> Starting update users posts and discussions counters");
+WriteInLog('> Starting update users posts and discussions counters');
 
 foreach ($users as $user) {
     $userId = $user['id'];
 
     // count the number of posts
-    $query = RunPreparedQuery($dbFlarum, [':user_id' => $userId], "SELECT COUNT(id) AS nb_posts FROM posts WHERE user_id = :user_id");
+    $query = RunPreparedQuery($dbFlarum, [':user_id' => $userId], 'SELECT COUNT(id) AS nb_posts FROM posts WHERE user_id = :user_id');
     $nb_posts = $query->fetchAll(PDO::FETCH_ASSOC);
 
     // count the number of discussions
-    $query = RunPreparedQuery($dbFlarum, [':start_user_id' => $userId], "SELECT COUNT(id) AS nb_discussions FROM discussions WHERE start_user_id = :start_user_id");
+    $query = RunPreparedQuery($dbFlarum, [':start_user_id' => $userId], 'SELECT COUNT(id) AS nb_discussions FROM discussions WHERE start_user_id = :start_user_id');
     $nb_discussions = $query->fetchAll(PDO::FETCH_ASSOC);
 
     $userData = [
@@ -26,14 +26,14 @@ foreach ($users as $user) {
         ':id' => $userId
     ];
 
-    RunPreparedQuery($dbFlarum, $userData, "UPDATE users SET discussions_count = :discussions_count, comments_count = :comments_count WHERE id = :id");
+    RunPreparedQuery($dbFlarum, $userData, 'UPDATE users SET discussions_count = :discussions_count, comments_count = :comments_count WHERE id = :id');
 }
 
-WriteInLog("> Done");
+WriteInLog('> Done');
 
-WriteInLog("> Starting update tag table");
+WriteInLog('> Starting update tag table');
 
-$query = RunQuery($dbFlarum, "SELECT id FROM tags");
+$query = RunQuery($dbFlarum, 'SELECT id FROM tags');
 $tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($tags as $tag) {
@@ -50,13 +50,13 @@ foreach ($tags as $tag) {
     $query = RunPreparedQuery(
         $dbFlarum,
         [':tag_id' => $tagId],
-        "SELECT posts.discussion_id, posts.time
+        'SELECT posts.discussion_id, posts.time
         FROM discussions_tags
         INNER JOIN posts
         ON discussions_tags.discussion_id = posts.discussion_id
         WHERE discussions_tags.tag_id = :tag_id
         ORDER BY posts.time DESC
-        LIMIT 1"
+        LIMIT 1'
     );
     $last_discussion = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -66,10 +66,10 @@ foreach ($tags as $tag) {
         ':last_discussion_id' => $last_discussion[0]['discussion_id']
     ];
 
-    RunPreparedQuery($dbFlarum, $tagData, "UPDATE tags SET last_discussion_id = :last_discussion_id, last_time = :last_time WHERE id = :tagId");
+    RunPreparedQuery($dbFlarum, $tagData, 'UPDATE tags SET last_discussion_id = :last_discussion_id, last_time = :last_time WHERE id = :tagId');
 
     // Update tags.discussions_count
-    $query = RunPreparedQuery($dbFlarum, [':tag_id' => $tagId], "SELECT COUNT(*) AS count FROM discussions_tags WHERE tag_id = :tag_id");
+    $query = RunPreparedQuery($dbFlarum, [':tag_id' => $tagId], 'SELECT COUNT(*) AS count FROM discussions_tags WHERE tag_id = :tag_id');
     $discussions_count = $query->fetchAll(PDO::FETCH_ASSOC);
 
     $tagData = [
@@ -77,14 +77,14 @@ foreach ($tags as $tag) {
         ':id' => $tagId
     ];
 
-    RunPreparedQuery($dbFlarum, $tagData, "UPDATE tags SET discussions_count = :discussions_count WHERE id = :id");
+    RunPreparedQuery($dbFlarum, $tagData, 'UPDATE tags SET discussions_count = :discussions_count WHERE id = :id');
 }
 
-WriteInLog("> Done");
+WriteInLog('> Done');
 
-WriteInLog("> Converting fluxbb http(s) links");
+WriteInLog('> Converting fluxbb http(s) links');
 
-$query = RunQuery($dbFlarum, "SELECT id, content FROM posts");
+$query = RunQuery($dbFlarum, 'SELECT id, content FROM posts');
 $posts = $query->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($posts as $post) {
@@ -100,7 +100,7 @@ foreach ($posts as $post) {
         ':id' => $postId
     ];
 
-    RunPreparedQuery($dbFlarum, $postData, "UPDATE posts SET content = :content WHERE id = :id");
+    RunPreparedQuery($dbFlarum, $postData, 'UPDATE posts SET content = :content WHERE id = :id');
 }
 
-WriteInLog("> Done");
+WriteInLog('> Done');

@@ -6,9 +6,24 @@
 use Cocur\Slugify\Slugify;
 $slugify = new Slugify(['lowercase' => false]);
 
-function WriteInLog($message, $type=INFO) {
-    $line = "[$type] $message";
-    echo "$line\n";
+function WriteInLog($message, $type = 'INFO') {
+
+    $red    = "\033[0;31m";
+    $yellow = "\033[0;33m";
+    $green  = "\033[0;32m";
+    $normal = "\033[0m";
+
+    if ($type == 'ERROR' || $type == 'ERR!') {
+        $line = $red . "[$type] " . $message . $normal . PHP_EOL;
+    } else if ($type == 'WARN') {
+        $line = $yellow . "[$type] " . $message . $normal . PHP_EOL;
+    } else if ($type == 'SUCCES') {
+        $line = $green . "[$type] " . $message . $normal . PHP_EOL;
+    } else {
+        $line =  "[$type] " . $message . PHP_EOL;
+    }
+
+    echo $line;
     error_log($line, 0);
 }
 
@@ -17,7 +32,7 @@ function RunQuery($db, $sql) {
         $query = $db->query($sql);
     } catch(PDOException $e) {
         WriteInLog($e, 'ERROR');
-        die("/!\ An error occurred while executing the query");
+        die('/!\ An error occurred while executing the query');
     }
 
     return $query;
@@ -29,7 +44,7 @@ function RunPreparedQuery($db, $dataArray, $sql) {
         $query->execute($dataArray);
     } catch(PDOException $e) {
         WriteInLog($e, 'ERROR');
-        die("/!\ An error occurred while executing the prepared query");
+        die('/!\ An error occurred while executing the prepared query');
     }
 
     return $query;
@@ -40,10 +55,10 @@ function IsNullOrEmptyString($string) {
 }
 
 function ConvertTimestampToDatetime($timestamp) {
-    return date("Y-m-d H:i:s", $timestamp);
+    return date('Y-m-d H:i:s', $timestamp);
 }
 
-function Slugify($text, $options=null) {
+function Slugify($text, $options = null) {
 
     global $slugify;
     $slug = $slugify->slugify($text, $options);
@@ -84,15 +99,15 @@ function ReplaceUnsupportedMarks($text) {
      *   - m = PCRE_MULTILINE
      */
 
-    $text = preg_replace('#\[h](.+)\[\/h]#im', "[b][size=20]$1[/size][/b]", $text);
-    $text = preg_replace('#\[q](.+)\[\/q]#im', "$1", $text);
-    $text = preg_replace('#\[justify](.+)\[\/justify]#im', "$1", $text);
-    $text = preg_replace('#\[left](.+)\[\/left]#im', "$1", $text);
-    $text = preg_replace('#\[right](.+)\[\/right]#im', "$1", $text);
-    $text = preg_replace('#\[sup](.+)\[\/sup]#im', "$1", $text);
-    $text = preg_replace('#\[sub](.+)\[\/sub]#im', "$1", $text);
-    $text = preg_replace('#\[acronym](.+)\[\/acronym]#im', "$1", $text);
-    $text = preg_replace('#\[video](.+)\[\/video]#i', "$1", $text);
+    $text = preg_replace('#\[h](.+)\[\/h]#im', '[b][size=20]$1[/size][/b]', $text);
+    $text = preg_replace('#\[q](.+)\[\/q]#im', '$1', $text);
+    $text = preg_replace('#\[justify](.+)\[\/justify]#im', '$1', $text);
+    $text = preg_replace('#\[left](.+)\[\/left]#im', '$1', $text);
+    $text = preg_replace('#\[right](.+)\[\/right]#im', '$1', $text);
+    $text = preg_replace('#\[sup](.+)\[\/sup]#im', '$1', $text);
+    $text = preg_replace('#\[sub](.+)\[\/sub]#im', '$1', $text);
+    $text = preg_replace('#\[acronym](.+)\[\/acronym]#im', '$1', $text);
+    $text = preg_replace('#\[video](.+)\[\/video]#i', '$1', $text);
 
     return $text;
 }
@@ -104,20 +119,20 @@ function ConvertLinkFluxbb($text) {
     // convert link :
     // - https://domain.tld/viewtopic.php?id=xxx
     // - https://domain.tld/profile.php?id=xxx
-    $text = preg_replace("/viewtopic\.php\?id=([0-9]+)&p=[0-9]+|viewtopic\.php\?id=([0-9]+)/", "d/$1$2", $text);
+    $text = preg_replace('/viewtopic\.php\?id=([0-9]+)&p=[0-9]+|viewtopic\.php\?id=([0-9]+)/', 'd/$1$2', $text);
 
     // convert link :
     // - https://domain.tld/profile.php?id=xxx
-    $text = preg_replace("/profile\.php\?id=([0-9]+)/", "u/$1", $text);
+    $text = preg_replace('/profile\.php\?id=([0-9]+)/', 'u/$1', $text);
 
     // convert link :
     // - https://domain.tld/viewtopic.php?pid=xxx#pxxx
     $text = preg_replace_callback(
-        "/viewtopic\.php\?pid=([0-9]+)#p[0-9]+|viewtopic\.php\?pid=([0-9]+)/",
+        '/viewtopic\.php\?pid=([0-9]+)#p[0-9]+|viewtopic\.php\?pid=([0-9]+)/',
         function($matches) use ($dbFlarum) {
             $pid = isset($matches[2]) ? $matches[2] : $matches[1];
 
-            $query = RunPreparedQuery($dbFlarum, [':id' => $pid], "SELECT number, discussion_id FROM posts WHERE id = :id");
+            $query = RunPreparedQuery($dbFlarum, [':id' => $pid], 'SELECT number, discussion_id FROM posts WHERE id = :id');
             $info_id = $query->fetchAll(PDO::FETCH_ASSOC);
             $discussionId = intval($info_id[0]['discussion_id']);
             $number = intval($info_id[0]['number']);
@@ -130,7 +145,7 @@ function ConvertLinkFluxbb($text) {
     // convert link :
     // - https://domain.tld/viewforum.php?id=xxx
     $text = preg_replace_callback(
-        "/viewforum\.php\?id=([0-9]+)&p=[0-9]+|viewforum\.php\?id=([0-9]+)/",
+        '/viewforum\.php\?id=([0-9]+)&p=[0-9]+|viewforum\.php\?id=([0-9]+)/',
         function($matches) use ($dbFluxbb, $dbFluxbbPrefix) {
             $id = $matches[1];
             if (isset($matches[2])) {
@@ -161,7 +176,7 @@ function GetUserID($username) {
         $username = Slugify($username, '');
     }
 
-    $query = RunPreparedQuery($dbFlarum, [':username' => $username], "SELECT id FROM users WHERE username = :username");
+    $query = RunPreparedQuery($dbFlarum, [':username' => $username], 'SELECT id FROM users WHERE username = :username');
     $row = $query->fetch(PDO::FETCH_ASSOC);
 
     return $row['id'];
@@ -172,7 +187,7 @@ function SendNotificationToUser($address, $username, $slug) {
     global $mailFrom, $mailHost, $mailPort, $mailEncr, $mailUser, $mailPass;
 
     if($mailHost) {
-        $body = file_get_contents("/scripts/mail/body.html");
+        $body = file_get_contents('/scripts/mail/body.html');
         $body = preg_replace('/{USERNAME}/', $username, $body);
         $body = preg_replace('/{SLUG}/', $slug, $body);
 
@@ -189,12 +204,12 @@ function SendNotificationToUser($address, $username, $slug) {
         $mail->addAddress($address);
         $mail->isHTML(true);
         $mail->CharSet = 'UTF-8';
-        $mail->Subject = file_get_contents("/scripts/mail/title.txt");
+        $mail->Subject = file_get_contents('/scripts/mail/title.txt');
         $mail->Body = $body;
-        $mail->AltBody = "To view the message, please use an HTML compatible email viewer!";
+        $mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
 
         if(!$mail->send()) {
-            WriteInLog("Unable to send mail notification to ${address} . Error : " . $mail->ErrorInfo, "ERR!");
+            WriteInLog("Unable to send mail notification to ${address} . Error : " . $mail->ErrorInfo, 'ERR!');
         }
     }
 }

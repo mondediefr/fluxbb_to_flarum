@@ -3,14 +3,14 @@
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 
-WriteInLog("#############################");
-WriteInLog("### [1/8] Users migration ###");
-WriteInLog("#############################");
+WriteInLog('#############################');
+WriteInLog('### [1/8] Users migration ###');
+WriteInLog('#############################');
 
 $query = RunQuery($dbFluxbb, "SELECT id, username, email, registered, last_visit, signature FROM ${dbFluxbbPrefix}users");
 $users = $query->fetchAll(PDO::FETCH_ASSOC);
 
-WriteInLog("Migrating " . $query->rowCount() . " users...");
+WriteInLog('Migrating ' . $query->rowCount() . ' users...');
 
 $usersIgnored      = 0;
 $usersCleaned      = 0;
@@ -36,11 +36,11 @@ foreach ($users as $user) {
 
             if($row['id']) {
                 $usersIgnored++;
-                WriteInLog("/!\ Unable to clean username '" . $user['username'] . "', try to fix this account manually. Proposed nickname : '" . $username . "' (already exists in fluxbb database)", "ERR!");
+                WriteInLog("/!\ Unable to clean username '" . $user['username'] . "', try to fix this account manually. Proposed nickname : '" . $username . "' (already exists in fluxbb database)", 'ERR!');
                 continue;
             } else {
                 $usersCleaned++;
-                WriteInLog("/!\ User '" . $user['username'] . "' cleaned (incorrect format). New nickname : '" . $username . "'", "WARN");
+                WriteInLog("/!\ User '" . $user['username'] . "' cleaned (incorrect format). New nickname : '" . $username . "'", 'WARN');
                 //SendNotificationToUser($user['email'], $user['username'], $username);
             }
 
@@ -100,18 +100,18 @@ foreach ($users as $user) {
             ':discussions_count' => 0
         ];
 
-        $query = RunPreparedQuery($dbFlarum, $userData, "INSERT INTO users(id,username,email,is_activated,password,avatar_path,join_time,last_seen_time,comments_count,bio,discussions_count) VALUES(:id,:username,:email,:is_activated,:password,:avatar_path,:join_time,:last_seen_time,:comments_count,:bio,:discussions_count)");
+        $query = RunPreparedQuery($dbFlarum, $userData, 'INSERT INTO users(id,username,email,is_activated,password,avatar_path,join_time,last_seen_time,comments_count,bio,discussions_count) VALUES(:id,:username,:email,:is_activated,:password,:avatar_path,:join_time,:last_seen_time,:comments_count,:bio,:discussions_count)');
         $usersMigrated += $query->rowCount();
 
     } else {
         $usersIgnored++;
-        WriteInLog("/!\ User '" . $user['username'] . "' ignored (no mail address)", "WARN");
+        WriteInLog("/!\ User '" . $user['username'] . "' ignored (no mail address)", 'WARN');
     }
 }
 
-WriteInLog("DONE. Results : ");
-WriteInLog("> " . $usersMigrated . " user(s) migrated successfully");
-WriteInLog("> " . $usersIgnored . " user(s) ignored (guest account + those without mail address + accounts not cleaned)");
-WriteInLog("> " . $usersCleaned . " user(s) cleaned (incorrect format)");
-WriteInLog("> " . $signatureMigrated . " signature(s) cleaned and migrated successfully");
-WriteInLog("> " . $avatarMigrated . " avatar(s) migrated successfully");
+WriteInLog('DONE. Results : ');
+WriteInLog("> $usersMigrated user(s) migrated successfully", 'SUCCES');
+WriteInLog("> $usersIgnored user(s) ignored (guest account + those without mail address + accounts not cleaned)", 'SUCCES');
+WriteInLog("> $usersCleaned user(s) cleaned (incorrect format)", 'SUCCES');
+WriteInLog("> $signatureMigrated signature(s) cleaned and migrated successfully", 'SUCCES');
+WriteInLog("> $avatarMigrated avatar(s) migrated successfully", 'SUCCES');

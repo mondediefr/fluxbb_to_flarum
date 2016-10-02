@@ -1,13 +1,13 @@
 <?php
 
-WriteInLog("##################################");
-WriteInLog("### [2/8] Categories migration ###");
-WriteInLog("##################################");
+WriteInLog('##################################');
+WriteInLog('### [2/8] Categories migration ###');
+WriteInLog('##################################');
 
 $query = RunQuery($dbFluxbb, "SELECT id, cat_name, disp_position FROM ${dbFluxbbPrefix}categories");
 $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
-WriteInLog("Migrating " . $query->rowCount() . " categories...");
+WriteInLog('Migrating ' . $query->rowCount() . ' categories...');
 $categoriesMigrated = 0;
 
 foreach ($categories as $category) {
@@ -20,12 +20,12 @@ foreach ($categories as $category) {
         ':position' => intval($category['disp_position'])
     ];
 
-    $query = RunPreparedQuery($dbFlarum, $categorieData, "INSERT INTO tags(id,name,slug,color,position) VALUES(:id,:name,:slug,:color,:position)");
+    $query = RunPreparedQuery($dbFlarum, $categorieData, 'INSERT INTO tags(id,name,slug,color,position) VALUES(:id,:name,:slug,:color,:position)');
     $categoriesMigrated += $query->rowCount();
 
     WriteInLog("+ Category '" . $category['cat_name'] . "' done");
 
 }
 
-WriteInLog("DONE. Results : ");
-WriteInLog("> " . $categoriesMigrated . " categories migrated successfully");
+WriteInLog('DONE. Results : ');
+WriteInLog("> $categoriesMigrated categories migrated successfully", 'SUCCES');

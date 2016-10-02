@@ -1,13 +1,13 @@
 <?php
 
-WriteInLog("#####################################");
-WriteInLog("### [3/8] Subcategories migration ###");
-WriteInLog("#####################################");
+WriteInLog('#####################################');
+WriteInLog('### [3/8] Subcategories migration ###');
+WriteInLog('#####################################');
 
 $query = RunQuery($dbFluxbb, "SELECT id, forum_name, forum_desc, disp_position, cat_id FROM ${dbFluxbbPrefix}forums");
 $forums = $query->fetchAll(PDO::FETCH_ASSOC);
 
-WriteInLog("Migrating " . $query->rowCount() . " subcategories...");
+WriteInLog('Migrating ' . $query->rowCount() . ' subcategories...');
 $forumsMigrated = 0;
 
 // Contains the list of sub-categories in the form of a table of
@@ -25,7 +25,7 @@ foreach ($forums as $forum) {
         ':parent_id' => intval($forum['cat_id'])
     ];
 
-    $query = RunPreparedQuery($dbFlarum, $forumData, "INSERT INTO tags(name,slug,description,color,position,parent_id) VALUES(:name,:slug,:description,:color,:position,:parent_id)");
+    $query = RunPreparedQuery($dbFlarum, $forumData, 'INSERT INTO tags(name,slug,description,color,position,parent_id) VALUES(:name,:slug,:description,:color,:position,:parent_id)');
     $forumsMigrated += $query->rowCount();
 
     // Retrieve the forum/tag id
@@ -37,5 +37,5 @@ foreach ($forums as $forum) {
 
 }
 
-WriteInLog("DONE. Results : ");
-WriteInLog("> " . $forumsMigrated . " subcategories migrated successfully");
+WriteInLog('DONE. Results : ');
+WriteInLog("> $forumsMigrated subcategories migrated successfully", 'SUCCES');

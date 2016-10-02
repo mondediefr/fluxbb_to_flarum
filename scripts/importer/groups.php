@@ -1,13 +1,13 @@
 <?php
 
-WriteInLog("###################################");
-WriteInLog("### [5/8] User groups migration ###");
-WriteInLog("###################################");
+WriteInLog('###################################');
+WriteInLog('### [5/8] User groups migration ###');
+WriteInLog('###################################');
 
 $query = RunQuery($dbFluxbb, "SELECT * FROM ${dbFluxbbPrefix}groups");
 $groups = $query->fetchAll(PDO::FETCH_ASSOC);
 
-WriteInLog("Migrating " . $query->rowCount() . " user groups...");
+WriteInLog('Migrating ' . $query->rowCount() . ' user groups...');
 $groupsMigrated = 0;
 
 foreach ($groups as $group) {
@@ -39,7 +39,7 @@ foreach ($groups as $group) {
             RunPreparedQuery($dbFlarum, [
                 ':user_id' => $user['id'],
                 ':group_id' => $groupId
-            ], "INSERT INTO users_groups(user_id, group_id) VALUES(:user_id, :group_id)");
+            ], 'INSERT INTO users_groups(user_id, group_id) VALUES(:user_id, :group_id)');
         }
     }
 
@@ -51,7 +51,7 @@ foreach ($groups as $group) {
         ':icon' => $icon
     ];
 
-    $query = RunPreparedQuery($dbFlarum, $groupData, "INSERT INTO groups(id, name_singular, name_plural, color, icon) VALUES(:id, :name_singular, :name_plural, :color, :icon)");
+    $query = RunPreparedQuery($dbFlarum, $groupData, 'INSERT INTO groups(id, name_singular, name_plural, color, icon) VALUES(:id, :name_singular, :name_plural, :color, :icon)');
     $groupsMigrated += $query->rowCount();
 
     WriteInLog("+ Groupe '" . $group['g_title'] . "' done");
@@ -63,13 +63,13 @@ foreach ($groups as $group) {
 
     $groupPermissions = array(
         ':group_id' => $groupId,
-        ':permission' => "..."
+        ':permission' => '...'
     );
 
-    RunPreparedQuery($dbFlarum, $groupPermissions, "INSERT INTO permissions(group_id, permission) VALUES(:group_id, :permission)");
+    RunPreparedQuery($dbFlarum, $groupPermissions, 'INSERT INTO permissions(group_id, permission) VALUES(:group_id, :permission)');
     */
 
 }
 
-WriteInLog("DONE. Results : ");
-WriteInLog("> " . $groupsMigrated . " user groups migrated successfully");
+WriteInLog('DONE. Results : ');
+WriteInLog("> $groupsMigrated user groups migrated successfully", 'SUCCES');
