@@ -100,7 +100,7 @@ foreach ($posts as $post) {
         ':id' => $postId
     ];
 
-    RunPreparedQuery($dbFlarum, $postData,"UPDATE posts SET content = :content WHERE id = :id");
+    RunPreparedQuery($dbFlarum, $postData, "UPDATE posts SET content = :content WHERE id = :id");
 }
 
 WriteInLog("> Done");

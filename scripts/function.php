@@ -4,7 +4,7 @@
 // ------------------------------
 
 use Cocur\Slugify\Slugify;
-$slugify = new Slugify();
+$slugify = new Slugify(['lowercase' => false]);
 
 function WriteInLog($message, $type=INFO) {
     $line = "[$type] $message";
