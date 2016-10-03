@@ -13,18 +13,18 @@ function WriteInLog($message, $type = 'INFO') {
     $green  = "\033[0;32m";
     $normal = "\033[0m";
 
-    if ($type == 'ERROR' || $type == 'ERR!') {
+    if ($type == 'ERROR') {
         $line = $red . "[$type] " . $message . $normal . PHP_EOL;
     } else if ($type == 'WARN') {
         $line = $yellow . "[$type] " . $message . $normal . PHP_EOL;
-    } else if ($type == 'SUCCES') {
+    } else if ($type == 'SUCCESS') {
         $line = $green . "[$type] " . $message . $normal . PHP_EOL;
     } else {
         $line =  "[$type] " . $message . PHP_EOL;
     }
 
     echo $line;
-    error_log($line, 0);
+    error_log("[$type] $message", 0);
 }
 
 function RunQuery($db, $sql) {
@@ -99,9 +99,10 @@ function ReplaceUnsupportedMarks($text) {
      *   - m = PCRE_MULTILINE
      */
 
-    $text = preg_replace('#\[h](.+)\[\/h]#im', '[b][size=20]$1[/size][/b]', $text);
+    $text = preg_replace('#\[h](.+)\[\/h]#i', '[b][size=20]$1[/size][/b]', $text);
     $text = preg_replace('#\[q](.+)\[\/q]#im', '$1', $text);
-    $text = preg_replace('#\[justify](.+)\[\/justify]#im', '$1', $text);
+    $text = preg_replace('#\[justify](.+)\[\/justify]#i', '$1', $text);
+    $text = preg_replace('#\[justify](.+)\[\/justify]#is', '$1', $text);
     $text = preg_replace('#\[left](.+)\[\/left]#im', '$1', $text);
     $text = preg_replace('#\[right](.+)\[\/right]#im', '$1', $text);
     $text = preg_replace('#\[sup](.+)\[\/sup]#im', '$1', $text);
@@ -209,7 +210,7 @@ function SendNotificationToUser($address, $username, $slug) {
         $mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
 
         if(!$mail->send()) {
-            WriteInLog("Unable to send mail notification to ${address} . Error : " . $mail->ErrorInfo, 'ERR!');
+            WriteInLog("Unable to send mail notification to ${address} . Error : " . $mail->ErrorInfo, 'ERROR');
         }
     }
 }

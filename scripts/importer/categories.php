@@ -28,4 +28,4 @@ foreach ($categories as $category) {
 }
 
 WriteInLog('DONE. Results : ');
-WriteInLog("> $categoriesMigrated categories migrated successfully", 'SUCCES');
+WriteInLog("> $categoriesMigrated categories migrated successfully", 'SUCCESS');

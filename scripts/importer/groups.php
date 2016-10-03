@@ -72,4 +72,4 @@ foreach ($groups as $group) {
 }
 
 WriteInLog('DONE. Results : ');
-WriteInLog("> $groupsMigrated user groups migrated successfully", 'SUCCES');
+WriteInLog("> $groupsMigrated user groups migrated successfully", 'SUCCESS');

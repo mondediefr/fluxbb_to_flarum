@@ -24,4 +24,4 @@ foreach ($subscriptions as $subscription) {
 }
 
 WriteInLog('DONE. Results : ');
-WriteInLog("> $subscriptionsMigrated topic subscriptions migrated successfully", 'SUCCES');
+WriteInLog("> $subscriptionsMigrated topic subscriptions migrated successfully", 'SUCCESS');

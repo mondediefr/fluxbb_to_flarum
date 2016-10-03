@@ -38,4 +38,4 @@ foreach ($forums as $forum) {
 }
 
 WriteInLog('DONE. Results : ');
-WriteInLog("> $forumsMigrated subcategories migrated successfully", 'SUCCES');
+WriteInLog("> $forumsMigrated subcategories migrated successfully", 'SUCCESS');
