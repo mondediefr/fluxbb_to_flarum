@@ -96,18 +96,19 @@ function ReplaceUnsupportedMarks($text) {
      *
      * PCRE PATTERNS :
      *   - i = PCRE_CASELESS
-     *   - m = PCRE_MULTILINE
+     *   - s = PCRE_DOTALL
      */
 
     $text = preg_replace('#\[h](.+)\[\/h]#i', '[b][size=20]$1[/size][/b]', $text);
-    $text = preg_replace('#\[q](.+)\[\/q]#im', '$1', $text);
+    $text = preg_replace('#\[q](.+)\[\/q]#is', '$1', $text);
     $text = preg_replace('#\[justify](.+)\[\/justify]#i', '$1', $text);
     $text = preg_replace('#\[justify](.+)\[\/justify]#is', '$1', $text);
-    $text = preg_replace('#\[left](.+)\[\/left]#im', '$1', $text);
-    $text = preg_replace('#\[right](.+)\[\/right]#im', '$1', $text);
-    $text = preg_replace('#\[sup](.+)\[\/sup]#im', '$1', $text);
-    $text = preg_replace('#\[sub](.+)\[\/sub]#im', '$1', $text);
-    $text = preg_replace('#\[acronym](.+)\[\/acronym]#im', '$1', $text);
+    $text = preg_replace('#\[left](.+)\[\/left]#is', '$1', $text);
+    $text = preg_replace('#\[right](.+)\[\/right]#is', '$1', $text);
+    $text = preg_replace('#\[sup](.+)\[\/sup]#is', '$1', $text);
+    $text = preg_replace('#\[sub](.+)\[\/sub]#is', '$1', $text);
+    $text = preg_replace('#\[acronym](.+)\[\/acronym]#is', '$1', $text);
+    $text = preg_replace('#\[acronym=(.+)](.+)\[\/acronym]#is', '$2', $text);
     $text = preg_replace('#\[video](.+)\[\/video]#i', '$1', $text);
 
     return $text;

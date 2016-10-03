@@ -22,7 +22,7 @@ case "$action" in
     docker images --quiet --filter=dangling=true | xargs docker rmi
     ;;
   *)
-    echo "Usage : $0 migrate|update-bundle|fluxbb-db-init|flarum-db-init|build|remove|clean"
+    echo "Usage : $0 init|migrate|update-bundle|fluxbb-db-init|flarum-db-init|build|remove|clean"
     ;;
 esac
 
