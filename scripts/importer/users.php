@@ -100,7 +100,7 @@ foreach ($users as $user) {
             ':discussions_count' => 0
         ];
 
-        $query = RunPreparedQuery($dbFlarum, $userData, 'INSERT INTO users(id,username,email,is_activated,password,avatar_path,join_time,last_seen_time,comments_count,bio,discussions_count) VALUES(:id,:username,:email,:is_activated,:password,:avatar_path,:join_time,:last_seen_time,:comments_count,:bio,:discussions_count)');
+        $query = RunPreparedQuery($dbFlarum, $userData, "INSERT INTO ${dbFlarumPrefix}users(id,username,email,is_activated,password,avatar_path,join_time,last_seen_time,comments_count,bio,discussions_count) VALUES(:id,:username,:email,:is_activated,:password,:avatar_path,:join_time,:last_seen_time,:comments_count,:bio,:discussions_count)");
         $usersMigrated += $query->rowCount();
 
     } else {

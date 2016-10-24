@@ -20,7 +20,7 @@ foreach ($categories as $category) {
         ':position' => intval($category['disp_position'])
     ];
 
-    $query = RunPreparedQuery($dbFlarum, $categorieData, 'INSERT INTO tags(id,name,slug,color,position) VALUES(:id,:name,:slug,:color,:position)');
+    $query = RunPreparedQuery($dbFlarum, $categorieData, "INSERT INTO ${dbFlarumPrefix}tags(id,name,slug,color,position) VALUES(:id,:name,:slug,:color,:position)");
     $categoriesMigrated += $query->rowCount();
 
     WriteInLog("+ Category '" . $category['cat_name'] . "' done");

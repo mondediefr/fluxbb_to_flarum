@@ -119,7 +119,7 @@ function ReplaceUnsupportedMarks($text) {
 
 function ConvertLinkFluxbb($text) {
 
-    global $dbFlarum, $dbFluxbb, $dbFluxbbPrefix;
+    global $dbFlarum, $dbFluxbb, $dbFluxbbPrefix, $dbFlarumPrefix;
 
     // convert link :
     // - https://domain.tld/viewtopic.php?id=xxx
@@ -134,10 +134,10 @@ function ConvertLinkFluxbb($text) {
     // - https://domain.tld/viewtopic.php?pid=xxx#pxxx
     $text = preg_replace_callback(
         '/viewtopic\.php\?pid=([0-9]+)#p[0-9]+|viewtopic\.php\?pid=([0-9]+)/',
-        function($matches) use ($dbFlarum) {
+        function($matches) use ($dbFlarum, $dbFlarumPrefix) {
             $pid = isset($matches[2]) ? $matches[2] : $matches[1];
 
-            $query = RunPreparedQuery($dbFlarum, [':id' => $pid], 'SELECT number, discussion_id FROM posts WHERE id = :id');
+            $query = RunPreparedQuery($dbFlarum, [':id' => $pid], "SELECT number, discussion_id FROM ${dbFlarumPrefix}posts WHERE id = :id");
             $info_id = $query->fetchAll(PDO::FETCH_ASSOC);
             $discussionId = intval($info_id[0]['discussion_id']);
             $number = intval($info_id[0]['number']);
@@ -175,13 +175,13 @@ function GetRandomColor() {
 
 function GetUserID($username) {
 
-    global $dbFlarum;
+    global $dbFlarum, $dbFlarumPrefix;
 
     if(!preg_match('/^[a-zA-Z0-9-_]+$/', $username)) {
         $username = Slugify($username, '');
     }
 
-    $query = RunPreparedQuery($dbFlarum, [':username' => $username], 'SELECT id FROM users WHERE username = :username');
+    $query = RunPreparedQuery($dbFlarum, [':username' => $username], "SELECT id FROM ${dbFlarumPrefix}users WHERE username = :username");
     $row = $query->fetch(PDO::FETCH_ASSOC);
 
     return $row['id'];

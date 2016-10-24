@@ -16,6 +16,7 @@ ENV_PARAMS=" \
   &dbFlarumName=${DB_FLARUM_NAME} \
   &dbFlarumPass=${DB_FLARUM_PASS} \
   &dbFluxbbPrefix=${DB_FLUXBB_PREFIX} \
+  &dbFlarumPrefix=${DB_FLARUM_PREFIX} \
   &mailFrom=${MAIL_FROM} \
   &mailHost=${MAIL_HOST} \
   &mailPort=${MAIL_PORT} \

@@ -40,6 +40,8 @@ If this is not already done, install docker. Read https://docs.docker.com/engine
 
 ```bash
 git clone https://github.com/mondediefr/fluxbb_to_flarum.git && cd fluxbb_to_flarum
+
+# and build the image migrator
 ./run build
 ```
 
@@ -54,11 +56,10 @@ cp .env.sample .env
 
 ```bash
 echo "127.0.0.1 flarum.local" >> /etc/hosts
-echo 'export PATH_FLARUM_MIGRATION="/path/to/folder"' >> ~/.bash_profile
 ```
 
 ```nginx
-# File : $PATH_FLARUM_MIGRATION/docker/nginx/sites-enabled/flarum.conf
+# File : ./docker/nginx/sites-enabled/flarum.conf
 
 server {
 
@@ -81,23 +82,32 @@ server {
 #### 3 - Start the containers
 
 ```bash
-# Database first
-docker-compose up -d mariadb
-Creating mariadb
+# make sure you use last docker image
+docker pull mondedie/flarum
 
-# Wait 1 minute (mariadb init and database creation), then launch nginx and flarum
+# launch maraidb, nginx and flarum
 docker-compose up -d
 Creating flarum
 Creating nginx
 ```
 
-And init importer :
+Now, you must install flarum by opening your browser and setting database parameters.
+At this adress http://flarum.local
+
+```
+MySQL Host     = mariadb
+MySQL Database = flarum
+MySQL Username = flarum
+MySQL Password = 277F9fqGEgyB
+```
+
+Init importer :
 
 ```bash
 ./run init
 
 [INFO] Install migration script dependencies
-[INFO] Generate the default TextFormatter bundle
+[INFO] Creation of the default TextFormatter bundle
 ```
 
 #### 4 - Export your fluxbb dump and init fluxbb/flarum databases

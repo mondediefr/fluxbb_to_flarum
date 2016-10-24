@@ -18,7 +18,7 @@ foreach ($subscriptions as $subscription) {
         ':subscription' => 'follow'
     ];
 
-    $query = RunPreparedQuery($dbFlarum, $subscriptionData, 'INSERT INTO users_discussions(user_id, discussion_id, subscription) VALUES(:user_id, :discussion_id, :subscription)');
+    $query = RunPreparedQuery($dbFlarum, $subscriptionData, "INSERT INTO ${dbFlarumPrefix}users_discussions(user_id, discussion_id, subscription) VALUES(:user_id, :discussion_id, :subscription)");
     $subscriptionsMigrated += $query->rowCount();
 
 }

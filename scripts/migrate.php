@@ -31,6 +31,7 @@ $dbFlarumUser   = trim($dbFlarumUser);
 $dbFlarumName   = trim($dbFlarumName);
 $dbFlarumPass   = trim($dbFlarumPass);
 $dbFluxbbPrefix = trim($dbFluxbbPrefix);
+$dbFlarumPrefix = trim($dbFlarumPrefix);
 
 $mailFrom = trim($mailFrom);
 $mailHost = trim($mailHost);
@@ -54,14 +55,14 @@ try {
 
 WriteInLog('Connected successfully to the databases !');
 
-RunQuery($dbFlarum, 'TRUNCATE TABLE users');
-RunQuery($dbFlarum, 'TRUNCATE TABLE tags');
-RunQuery($dbFlarum, 'TRUNCATE TABLE discussions');
-RunQuery($dbFlarum, 'TRUNCATE TABLE discussions_tags');
-RunQuery($dbFlarum, 'TRUNCATE TABLE posts');
-RunQuery($dbFlarum, 'TRUNCATE TABLE groups');
-RunQuery($dbFlarum, 'TRUNCATE TABLE users_groups');
-RunQuery($dbFlarum, 'TRUNCATE TABLE users_discussions');
+RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}users");
+RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}tags");
+RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}discussions");
+RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}discussions_tags");
+RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}posts");
+RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}groups");
+RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}users_groups");
+RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}users_discussions");
 
 include 'importer/smileys.php';
 include 'importer/users.php';

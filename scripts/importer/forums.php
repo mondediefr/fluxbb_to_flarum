@@ -25,7 +25,7 @@ foreach ($forums as $forum) {
         ':parent_id' => intval($forum['cat_id'])
     ];
 
-    $query = RunPreparedQuery($dbFlarum, $forumData, 'INSERT INTO tags(name,slug,description,color,position,parent_id) VALUES(:name,:slug,:description,:color,:position,:parent_id)');
+    $query = RunPreparedQuery($dbFlarum, $forumData, "INSERT INTO ${dbFlarumPrefix}tags(name,slug,description,color,position,parent_id) VALUES(:name,:slug,:description,:color,:position,:parent_id)");
     $forumsMigrated += $query->rowCount();
 
     // Retrieve the forum/tag id

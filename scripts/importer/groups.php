@@ -39,7 +39,7 @@ foreach ($groups as $group) {
             RunPreparedQuery($dbFlarum, [
                 ':user_id' => $user['id'],
                 ':group_id' => $groupId
-            ], 'INSERT INTO users_groups(user_id, group_id) VALUES(:user_id, :group_id)');
+            ], "INSERT INTO ${dbFlarumPrefix}users_groups(user_id, group_id) VALUES(:user_id, :group_id)");
         }
     }
 
@@ -51,7 +51,7 @@ foreach ($groups as $group) {
         ':icon' => $icon
     ];
 
-    $query = RunPreparedQuery($dbFlarum, $groupData, 'INSERT INTO groups(id, name_singular, name_plural, color, icon) VALUES(:id, :name_singular, :name_plural, :color, :icon)');
+    $query = RunPreparedQuery($dbFlarum, $groupData, "INSERT INTO ${dbFlarumPrefix}groups(id, name_singular, name_plural, color, icon) VALUES(:id, :name_singular, :name_plural, :color, :icon)");
     $groupsMigrated += $query->rowCount();
 
     WriteInLog("+ Group '" . $group['g_title'] . "' done");
@@ -66,7 +66,7 @@ foreach ($groups as $group) {
         ':permission' => '...'
     );
 
-    RunPreparedQuery($dbFlarum, $groupPermissions, 'INSERT INTO permissions(group_id, permission) VALUES(:group_id, :permission)');
+    RunPreparedQuery($dbFlarum, $groupPermissions, "INSERT INTO ${dbFlarumPrefix}permissions(group_id, permission) VALUES(:group_id, :permission)");
     */
 
 }

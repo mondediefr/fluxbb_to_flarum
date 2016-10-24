@@ -28,7 +28,7 @@ foreach ($bans as $ban) {
         ':id' => $userId,
         ':email' => $ban['email'],
         ':suspend_until' => $duration
-    ], 'UPDATE users SET suspend_until = :suspend_until WHERE id = :id OR email = :email');
+    ], "UPDATE ${dbFlarumPrefix}users SET suspend_until = :suspend_until WHERE id = :id OR email = :email");
 
     $bansMigrated += $query->rowCount();
 
