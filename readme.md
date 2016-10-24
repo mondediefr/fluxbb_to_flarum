@@ -85,7 +85,7 @@ server {
 # make sure you use last docker image
 docker pull mondedie/flarum
 
-# launch maraidb, nginx and flarum
+# launch mariadb, nginx and flarum
 docker-compose up -d
 Creating flarum
 Creating nginx

@@ -7,7 +7,7 @@ WriteInLog('###########################');
 $query = RunQuery($dbFlarum, "SELECT id FROM ${dbFlarumPrefix}users");
 $users = $query->fetchAll(PDO::FETCH_ASSOC);
 
-WriteInLog('> Starting update users posts and discussions counters');
+WriteInLog('Starting the update posts counters and counters discussions...');
 
 foreach ($users as $user) {
     $userId = $user['id'];
@@ -29,9 +29,9 @@ foreach ($users as $user) {
     RunPreparedQuery($dbFlarum, $userData, "UPDATE ${dbFlarumPrefix}users SET discussions_count = :discussions_count, comments_count = :comments_count WHERE id = :id");
 }
 
-WriteInLog('> Done');
+WriteInLog('Done', 'SUCCESS');
 
-WriteInLog('> Starting update tag table');
+WriteInLog('Starting the update of the table tags...');
 
 $query = RunQuery($dbFlarum, "SELECT id FROM ${dbFlarumPrefix}tags");
 $tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -73,9 +73,9 @@ foreach ($tags as $tag) {
     RunPreparedQuery($dbFlarum, $tagData, "UPDATE ${dbFlarumPrefix}tags SET discussions_count = :discussions_count WHERE id = :id");
 }
 
-WriteInLog('> Done');
+WriteInLog('Done', 'SUCCESS');
 
-WriteInLog('> Converting fluxbb http(s) links');
+WriteInLog('Converting fluxbb http(s) links...');
 
 $query = RunQuery($dbFlarum, "SELECT id, content FROM ${dbFlarumPrefix}posts");
 $posts = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -96,4 +96,4 @@ foreach ($posts as $post) {
     RunPreparedQuery($dbFlarum, $postData, "UPDATE ${dbFlarumPrefix}posts SET content = :content WHERE id = :id");
 }
 
-WriteInLog('> Done');
+WriteInLog('Done', 'SUCCESS');

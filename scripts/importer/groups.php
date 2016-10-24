@@ -71,5 +71,5 @@ foreach ($groups as $group) {
 
 }
 
-WriteInLog('DONE. Results : ');
-WriteInLog("> $groupsMigrated user groups migrated successfully", 'SUCCESS');
+WriteInLog('Done, results :');
+WriteInLog("$groupsMigrated user groups migrated successfully", 'SUCCESS');

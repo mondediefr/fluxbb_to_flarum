@@ -36,11 +36,11 @@ foreach ($users as $user) {
 
             if($row['id']) {
                 $usersIgnored++;
-                WriteInLog("/!\ Unable to clean username '" . $user['username'] . "', try to fix this account manually. Proposed nickname : '" . $username . "' (already exists in fluxbb database)", 'ERROR');
+                WriteInLog("Unable to clean username '" . $user['username'] . "', try to fix this account manually. Proposed nickname : '" . $username . "' (already exists in fluxbb database)", 'ERROR');
                 continue;
             } else {
                 $usersCleaned++;
-                WriteInLog("/!\ User '" . $user['username'] . "' cleaned (incorrect format). New nickname : '" . $username . "'", 'WARN');
+                WriteInLog("User '" . $user['username'] . "' cleaned (incorrect format). New nickname : '" . $username . "'", 'WARN');
                 //SendNotificationToUser($user['email'], $user['username'], $username);
             }
 
@@ -105,13 +105,13 @@ foreach ($users as $user) {
 
     } else {
         $usersIgnored++;
-        WriteInLog("/!\ User '" . $user['username'] . "' ignored (no mail address)", 'WARN');
+        WriteInLog("User '" . $user['username'] . "' ignored (no mail address)", 'WARN');
     }
 }
 
-WriteInLog('DONE. Results : ');
-WriteInLog("> $usersMigrated user(s) migrated successfully", 'SUCCESS');
-WriteInLog("> $usersIgnored user(s) ignored (guest account + those without mail address + accounts not cleaned)", 'SUCCESS');
-WriteInLog("> $usersCleaned user(s) cleaned (incorrect format)", 'SUCCESS');
-WriteInLog("> $signatureMigrated signature(s) cleaned and migrated successfully", 'SUCCESS');
-WriteInLog("> $avatarMigrated avatar(s) migrated successfully", 'SUCCESS');
+WriteInLog('Done, results :');
+WriteInLog("$usersMigrated user(s) migrated successfully", 'SUCCESS');
+WriteInLog("$usersIgnored user(s) ignored (guest account + those without mail address + accounts not cleaned)", 'SUCCESS');
+WriteInLog("$usersCleaned user(s) cleaned (incorrect format)", 'SUCCESS');
+WriteInLog("$signatureMigrated signature(s) cleaned and migrated successfully", 'SUCCESS');
+WriteInLog("$avatarMigrated avatar(s) migrated successfully", 'SUCCESS');

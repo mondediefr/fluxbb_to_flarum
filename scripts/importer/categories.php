@@ -27,5 +27,5 @@ foreach ($categories as $category) {
 
 }
 
-WriteInLog('DONE. Results : ');
-WriteInLog("> $categoriesMigrated categories migrated successfully", 'SUCCESS');
+WriteInLog('Done, results :');
+WriteInLog("$categoriesMigrated categories migrated successfully", 'SUCCESS');

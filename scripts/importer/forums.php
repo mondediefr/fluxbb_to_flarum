@@ -37,5 +37,5 @@ foreach ($forums as $forum) {
 
 }
 
-WriteInLog('DONE. Results : ');
-WriteInLog("> $forumsMigrated subcategories migrated successfully", 'SUCCESS');
+WriteInLog('Done, results :');
+WriteInLog("$forumsMigrated subcategories migrated successfully", 'SUCCESS');

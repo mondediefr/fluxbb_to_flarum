@@ -18,7 +18,7 @@ foreach ($bans as $ban) {
 
     if(IsNullOrEmptyString($userId)) {
         $bansIgnored++;
-        WriteInLog("/!\ User '" . $ban['username'] . "' ignored (account not found)", 'WARN');
+        WriteInLog("User '" . $ban['username'] . "' ignored (account not found)", 'WARN');
         continue;
     }
 
@@ -34,6 +34,6 @@ foreach ($bans as $ban) {
 
 }
 
-WriteInLog('DONE. Results : ');
-WriteInLog("> $bansMigrated ban(s) migrated successfully", 'SUCCESS');
-WriteInLog("> $bansIgnored ban(s) ignored (account not found)", 'SUCCESS');
+WriteInLog('Done, results :');
+WriteInLog("$bansMigrated ban(s) migrated successfully", 'SUCCESS');
+WriteInLog("$bansIgnored ban(s) ignored (account not found)", 'SUCCESS');
