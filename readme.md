@@ -7,10 +7,10 @@ Migration script for Fluxbb forum to Flarum, partially based on work of :
 
 ### Description
 
-This tool exports and migrates your Fluxbb (v1.x) forum to Flarum.
+This tool exports and migrates your Fluxbb (>= v1.5.8) forum to Flarum.
 
 Flarum is still in beta testing, therefore only some of the typical web forum features are available, and what is now working can break anytime
-(including this script, tailored for flarum ver. 0.1.0-beta.5). At this moment fluxbb_to_flarum only supports migration of :
+(including this script, tailored for flarum v0.1.0-beta.6). At this moment fluxbb_to_flarum only supports migration of :
 
 - Users
 - User groups
@@ -27,7 +27,6 @@ Flarum is still in beta testing, therefore only some of the typical web forum fe
 
 ### Roadmap
 
-- Private Messages are not exported yet, since this feature is not yet supported by Flarum.
 - Forums permissions (forum_perms -> permissions)
 
 ### Usage instructions
