@@ -3,7 +3,7 @@
     "require": {
         "intervention/image": "^2.3",
         "illuminate/support": "^5.3",
-        "s9e/text-formatter": "^0.8.2",
+        "s9e/text-formatter": "^0.9.1",
         "cocur/slugify": "^2.3",
         "phpmailer/phpmailer": "^5.2"
     },

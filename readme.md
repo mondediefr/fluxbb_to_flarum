@@ -56,12 +56,11 @@ cp .env.sample .env
 ```bash
 echo "127.0.0.1 flarum.local" >> /etc/hosts
 ```
-
+Create the file flarum.conf with folders ./docker/nginx/sites-enabled/
 ```nginx
 # File : ./docker/nginx/sites-enabled/flarum.conf
 
 server {
-
   listen 8000;
   server_name flarum.local;
 
@@ -74,7 +73,6 @@ server {
     proxy_set_header        X-Forwarded-Proto    $scheme;
     proxy_redirect          off;
   }
-
 }
 ```
 
@@ -82,17 +80,16 @@ server {
 
 ```bash
 # make sure you use last docker image
-docker pull mondedie/flarum
+docker pull mondedie/docker-flarum
 
 # launch mariadb, nginx and flarum
 docker-compose up -d
-Creating flarum
-Creating nginx
 ```
 
 Now, you must install flarum by opening your browser and setting database parameters.
 At this adress http://flarum.local
 
+Data to set on install page
 ```
 MySQL Host     = mariadb
 MySQL Database = flarum
@@ -263,8 +260,8 @@ To reset and remove all containers, run :
 ./run remove
 
 # Remove mount point data
-rm -rf $PATH_FLARUM_MIGRATION/docker/flarum/ \
-       $PATH_FLARUM_MIGRATION/docker/mysql/
+rm -rf ./docker/flarum/ \
+       ./docker/mysql/
 ```
 
 To restart all containers again : https://github.com/mondediefr/fluxbb_to_flarum#3---start-the-containers

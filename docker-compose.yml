@@ -10,7 +10,7 @@ nginx:
     - ./docker/nginx/log:/var/log/nginx
 
 flarum:
-  image: mondedie/flarum
+  image: mondedie/docker-flarum
   container_name: flarum
   links:
     - mariadb:mariadb
@@ -19,7 +19,8 @@ flarum:
     - FORUM_URL=http://flarum.local/
     - DB_PASS=277F9fqGEgyB
   volumes:
-    - ./docker/flarum:/flarum/app/assets
+    - ./docker/flarum/assets:/flarum/app/assets
+    - ./docker/flarum/extensions:/flarum/app/extensions
 
 mariadb:
   image: mariadb:10.1
