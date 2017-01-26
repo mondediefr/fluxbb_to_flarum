@@ -25,10 +25,6 @@ Flarum is still in beta testing, therefore only some of the typical web forum fe
 - Smileys
 - Fluxbb http(s) links
 
-### Roadmap
-
-- Forums permissions (forum_perms -> permissions)
-
 ### Usage instructions
 
 #### 0 - Prerequisites
@@ -233,6 +229,11 @@ Migration logs are available in `scripts/logs/migrate.log`
 You can see the result of migration here : http://flarum.local
 
 ### Misc
+
+#### Create custom plugin
+
+To create a custom plugin, you must create a file using this syntax `name_of_my_plugin.plugin.php`
+Note: without a suffix `.plugin.php` the file will not be executed.
 
 #### TextFormatter Bundle
 
