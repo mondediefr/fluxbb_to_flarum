@@ -1,7 +1,7 @@
 <?php
 
 WriteInLog('##################################');
-WriteInLog('### [2/8] Categories migration ###');
+WriteInLog('### [2/9] Categories migration ###');
 WriteInLog('##################################');
 
 $query = RunQuery($dbFluxbb, "SELECT id, cat_name, disp_position FROM ${dbFluxbbPrefix}categories");

@@ -4,7 +4,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 
 WriteInLog('#############################');
-WriteInLog('### [1/8] Users migration ###');
+WriteInLog('### [1/9] Users migration ###');
 WriteInLog('#############################');
 
 $query = RunQuery($dbFluxbb, "SELECT id, username, email, registered, last_visit, signature FROM ${dbFluxbbPrefix}users");

@@ -1,7 +1,7 @@
 <?php
 
 WriteInLog('###########################');
-WriteInLog('### [8/8] Miscellaneous ###');
+WriteInLog('### [8/9] Miscellaneous ###');
 WriteInLog('###########################');
 
 $query = RunQuery($dbFlarum, "SELECT id FROM ${dbFlarumPrefix}users");

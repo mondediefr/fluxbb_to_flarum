@@ -1,7 +1,7 @@
 <?php
 
 WriteInLog('#################################');
-WriteInLog('### [7/8] User bans migration ###');
+WriteInLog('### [7/9] User bans migration ###');
 WriteInLog('#################################');
 
 $query = RunQuery($dbFluxbb, "SELECT * FROM ${dbFluxbbPrefix}bans");

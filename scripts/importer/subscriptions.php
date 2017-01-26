@@ -1,7 +1,7 @@
 <?php
 
 WriteInLog('###########################################');
-WriteInLog('### [6/8] Topic subscriptions migration ###');
+WriteInLog('### [6/9] Topic subscriptions migration ###');
 WriteInLog('###########################################');
 
 $query = RunQuery($dbFluxbb, "SELECT * FROM ${dbFluxbbPrefix}topic_subscriptions");

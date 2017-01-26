@@ -1,7 +1,7 @@
 <?php
 
 WriteInLog('#####################################');
-WriteInLog('### [3/8] Subcategories migration ###');
+WriteInLog('### [3/9] Subcategories migration ###');
 WriteInLog('#####################################');
 
 $query = RunQuery($dbFluxbb, "SELECT id, forum_name, forum_desc, disp_position, cat_id FROM ${dbFluxbbPrefix}forums");

@@ -1,7 +1,7 @@
 <?php
 
 WriteInLog('########################################');
-WriteInLog('### [4/8] Topics and posts migration ###');
+WriteInLog('### [4/9] Topics and posts migration ###');
 WriteInLog('########################################');
 
 $query = RunQuery($dbFluxbb, "SELECT * FROM ${dbFluxbbPrefix}topics");

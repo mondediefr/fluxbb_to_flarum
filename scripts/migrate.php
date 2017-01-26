@@ -3,8 +3,8 @@
 $timestamp_start = microtime(true);
 
 require 'vendor/autoload.php';
-include 'TextCustomBundle/TextFormatter.php';
-include 'function.php';
+require 'TextCustomBundle/TextFormatter.php';
+require 'function.php';
 
 // INI CONFIG
 // ------------------------------
@@ -64,15 +64,16 @@ RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}groups");
 RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}users_groups");
 RunQuery($dbFlarum, "TRUNCATE TABLE ${dbFlarumPrefix}users_discussions");
 
-include 'importer/smileys.php';
-include 'importer/users.php';
-include 'importer/categories.php';
-include 'importer/forums.php';
-include 'importer/topics-posts.php';
-include 'importer/groups.php';
-include 'importer/subscriptions.php';
-include 'importer/bans.php';
-include 'importer/misc.php';
+require 'importer/smileys.php';
+require 'importer/users.php';
+require 'importer/categories.php';
+require 'importer/forums.php';
+require 'importer/topics-posts.php';
+require 'importer/groups.php';
+require 'importer/subscriptions.php';
+require 'importer/bans.php';
+require 'importer/misc.php';
+require 'plugins/plugin.php';
 
 $timestamp_end = microtime(true);
 $diff = $timestamp_end - $timestamp_start;

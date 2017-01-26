@@ -1,7 +1,7 @@
 <?php
 
 WriteInLog('###################################');
-WriteInLog('### [5/8] User groups migration ###');
+WriteInLog('### [5/9] User groups migration ###');
 WriteInLog('###################################');
 
 $query = RunQuery($dbFluxbb, "SELECT * FROM ${dbFluxbbPrefix}groups");
