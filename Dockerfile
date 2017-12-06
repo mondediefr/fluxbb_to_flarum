@@ -20,6 +20,7 @@ RUN echo "@commuedge http://nl.alpinelinux.org/alpine/edge/community" >> /etc/ap
     php7-xsl@commuedge \
     php7-zlib@commuedge \
     php7-gd@commuedge \
+    php7-tokenizer@commuedge \
  && cd /tmp \
  && ln -s /usr/bin/php7 /usr/bin/php \
  && curl -s http://getcomposer.org/installer | php \
