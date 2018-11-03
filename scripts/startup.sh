@@ -53,7 +53,7 @@ EOF
 
 if [ ! -f "/scripts/composer.lock" ]; then
   echo "[INFO] Install migration script dependencies"
-  composer install --quiet --working-dir=/scripts
+  composer install --working-dir=/scripts
 fi
 
 if [ -d "${AVATAR_PATH}" ]; then
@@ -72,16 +72,16 @@ cp -r /scripts/smileys/* $SMILEYS_PATH > /dev/null 2>&1
 
 if [ ! -f "/scripts/TextCustomBundle/TextFormatter.php" ]; then
   echo "[INFO] Creation of the default TextFormatter bundle"
-  php7 -f /scripts/createCustomBundle.php
+  php -f /scripts/createCustomBundle.php
 fi
 
 case "$action" in
   "migrate")
-    php7 -f /scripts/migrate.php -- "$ENV_PARAMS"
+    php -f /scripts/migrate.php -- "$ENV_PARAMS"
     ;;
   "update-bundle")
     rm -f /scripts/TextCustomBundle/Renderer_*.php
-    php7 -f /scripts/createCustomBundle.php
+    php -f /scripts/createCustomBundle.php
     echo "[INFO] TextFormatter bundle updated !"
     ;;
   "fluxbb-db-init")

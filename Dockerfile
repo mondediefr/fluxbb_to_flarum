@@ -21,8 +21,8 @@ RUN echo "@commuedge http://nl.alpinelinux.org/alpine/edge/community" >> /etc/ap
     php7-zlib@commuedge \
     php7-gd@commuedge \
     php7-tokenizer@commuedge \
+    php7-fileinfo@commuedge \
  && cd /tmp \
- && ln -s /usr/bin/php7 /usr/bin/php \
  && curl -s http://getcomposer.org/installer | php \
  && mv /tmp/composer.phar /usr/bin/composer \
  && chmod +x /usr/bin/composer \
