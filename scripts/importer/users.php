@@ -34,7 +34,7 @@ foreach ($users as $user) {
                 'separator' => '',
                 'lowercase' => true
             ]);
-            $query = RunPreparedQuery($dbFluxbb, [':username' => $username], "SELECT id FROM {$dbFluxbbPrefix}users WHERE username = :username COLLATE utf8_bin");
+            $query = RunPreparedQuery($dbFluxbb, [':username' => $username], "SELECT id FROM {$dbFluxbbPrefix}users WHERE username = :username collate utf8mb4_bin");
             $row = $query->fetch(PDO::FETCH_ASSOC);
 
             if($row['id']) {
