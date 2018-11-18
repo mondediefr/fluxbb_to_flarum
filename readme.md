@@ -5,7 +5,7 @@ Migration script for Fluxbb forum to Flarum, partially based on work of :
 - [robrotheram/phpbb_to_flarum](https://github.com/robrotheram/phpbb_to_flarum)
 - [ItalianSpaceAstronauticsAssociation/smf2_to_flarum](https://github.com/ItalianSpaceAstronauticsAssociation/smf2_to_flarum)
 
-### Description
+### Description
 
 This tool exports and migrates your Fluxbb (>= v1.5.8) forum to Flarum.
 
@@ -76,7 +76,7 @@ server {
 
 ```bash
 # make sure you use last docker image
-docker pull mondedie/docker-flarum
+docker pull mondedie/docker-flarum:0.1.0-beta.7.2-stable
 
 # launch mariadb, nginx and flarum
 docker-compose up -d

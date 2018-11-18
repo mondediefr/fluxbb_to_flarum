@@ -4,13 +4,13 @@ nginx:
   links:
     - flarum:flarum
   ports:
-    - "80:8000"
+    - 80:8000
   volumes:
-    - ./docker/nginx/sites-enabled:/sites-enabled
-    - ./docker/nginx/log:/var/log/nginx
+    - ${PWD}/docker/nginx/sites-enabled:/sites-enabled
+    - ${PWD}/docker/nginx/log:/var/log/nginx
 
 flarum:
-  image: mondedie/docker-flarum
+  image: mondedie/docker-flarum:0.1.0-beta.7.2-stable
   container_name: flarum
   links:
     - mariadb:mariadb
@@ -19,16 +19,16 @@ flarum:
     - FORUM_URL=http://flarum.local/
     - DB_PASS=277F9fqGEgyB
   volumes:
-    - ./docker/flarum/assets:/flarum/app/assets
-    - ./docker/flarum/extensions:/flarum/app/extensions
+    - ${PWD}/docker/flarum/assets:/flarum/app/assets
+    - ${PWD}/docker/flarum/extensions:/flarum/app/extensions
 
 mariadb:
   image: mariadb:10.1
   container_name: mariadb
   ports:
-    - "3306:3306"
+    - 3306:3306
   volumes:
-    - ./docker/mysql/db:/var/lib/mysql
+    - ${PWD}/docker/mysql/db:/var/lib/mysql
   environment:
     - MYSQL_ROOT_PASSWORD=KthJ8k2DE4q3
     - MYSQL_DATABASE=flarum
