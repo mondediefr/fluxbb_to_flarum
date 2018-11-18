@@ -11,7 +11,6 @@ WriteInLog('Migrating ' . $query->rowCount() . ' topics...');
 $topicsMigrated = 0;
 $postsMigrated  = 0;
 $topicsIgnored  = 0;
-$postsTruncate  = 0;
 
 foreach ($topics as $topic) {
 
@@ -56,13 +55,6 @@ foreach ($topics as $topic) {
         }
 
         $content = TextFormatter::parse(ReplaceUnsupportedMarks($content));
-
-        if (strlen($content) > 65535) {
-            WriteInLog("The post id:'" . $post['id'] . "' is too long, more than 65535 characters", 'ERROR');
-            // To avoid the error 500 (Internal Server Error)
-            $content = TextFormatter::parse('This post was erased because the content exceed 65535 characters. Message by fluxbb_to_flarum importer');
-            $postsTruncate++;
-        }
 
         $postData = [
             ':id' => $post['id'],
@@ -129,4 +121,3 @@ WriteInLog('Done, results :');
 WriteInLog("$topicsMigrated topic(s) migrated successfully", 'SUCCESS');
 WriteInLog("$postsMigrated post(s) migrated successfully", 'SUCCESS');
 WriteInLog("$topicsIgnored topic(s) ignored (moved topics)", 'SUCCESS');
-WriteInLog("$postsTruncate topic(s) truncated (longer than 65535 characters)", 'SUCCESS');
