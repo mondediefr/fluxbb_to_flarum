@@ -31,7 +31,7 @@ foreach ($users as $user) {
         if(!preg_match('/^[a-zA-Z0-9-_]+$/', $user['username'])) {
 
             $username = Slugify($user['username'], '');
-            $query = RunPreparedQuery($dbFluxbb, [':username' => $username], "SELECT id FROM {$dbFluxbbPrefix}users WHERE username = :username collate utf8_bin");
+            $query = RunPreparedQuery($dbFluxbb, [':username' => $username], "SELECT id FROM {$dbFluxbbPrefix}users WHERE username = :username COLLATE utf8_bin");
             $row = $query->fetch(PDO::FETCH_ASSOC);
 
             if($row['id']) {
