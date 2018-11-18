@@ -18,7 +18,10 @@ foreach ($forums as $forum) {
 
     $forumData = [
         ':name' => $forum['forum_name'],
-        ':slug' => Slugify($forum['forum_name']),
+        ':slug' => Slugify($forum['forum_name'], [
+            'separator' => '-',
+            'lowercase' => false
+        ]),
         ':description' => $forum['forum_desc'],
         ':color' => GetRandomColor(),
         ':position' => intval($forum['disp_position']),

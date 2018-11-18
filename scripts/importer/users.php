@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
-use Intervention\Image\Image;
+use Intervention\Image\ImageManagerStatic as Image;
 
 WriteInLog('#############################');
 WriteInLog('### [1/9] Users migration ###');
@@ -30,7 +30,10 @@ foreach ($users as $user) {
         // The username must contain only letters, numbers and dashes.
         if(!preg_match('/^[a-zA-Z0-9-_]+$/', $user['username'])) {
 
-            $username = Slugify($user['username'], '');
+            $username = Slugify($user['username'], [
+                'separator' => '',
+                'lowercase' => true
+            ]);
             $query = RunPreparedQuery($dbFluxbb, [':username' => $username], "SELECT id FROM {$dbFluxbbPrefix}users WHERE username = :username COLLATE utf8_bin");
             $row = $query->fetch(PDO::FETCH_ASSOC);
 

@@ -4,7 +4,6 @@
 // ------------------------------
 
 use Cocur\Slugify\Slugify;
-$slugify = new Slugify(['lowercase' => false]);
 
 function WriteInLog($message, $type = 'INFO') {
 
@@ -59,30 +58,8 @@ function ConvertTimestampToDatetime($timestamp) {
 }
 
 function Slugify($text, $options = null) {
-
-    global $slugify;
-    $slug = $slugify->slugify($text, $options);
-
-    if(!empty($slug)) {
-        return $slug;
-    } else {
-        // if slugify librairie wipes all characters, fallback to the second method
-        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-        $text = trim($text, '-');
-        $unwanted = [
-            'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
-            'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
-            'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
-            'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
-            'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y'
-        ];
-        $text = strtr($text, $unwanted);
-        $text = strtolower($text);
-        $text = preg_replace('~-+~', '-', $text);
-        // if empty again, fallback to random slug...
-        return (empty($text)) ? bin2hex(random_bytes(5)) : $text;
-    }
-
+    $slugify = new Slugify();
+    $slugify->slugify($text, $options);
 }
 
 function ReplaceUnsupportedMarks($text) {
@@ -159,7 +136,10 @@ function ConvertLinkFluxbb($text) {
             $query = RunPreparedQuery($dbFluxbb, [':id' => $id], "SELECT forum_name FROM ${dbFluxbbPrefix}forums WHERE id = :id");
             $info_slug = $query->fetchAll(PDO::FETCH_ASSOC);
             $slug = $info_slug[0]['forum_name'];
-            $slug = Slugify($slug);
+            $slug = Slugify($slug, [
+                'separator' => '-',
+                'lowercase' => false
+            ]);
 
             return "t/$slug";
         },
@@ -178,7 +158,10 @@ function GetUserID($username) {
     global $dbFlarum, $dbFlarumPrefix;
 
     if(!preg_match('/^[a-zA-Z0-9-_]+$/', $username)) {
-        $username = Slugify($username, '');
+        $username = Slugify($username, [
+            'separator' => '',
+            'lowercase' => true
+        ]);
     }
 
     $query = RunPreparedQuery($dbFlarum, [':username' => $username], "SELECT id FROM ${dbFlarumPrefix}users WHERE username = :username");

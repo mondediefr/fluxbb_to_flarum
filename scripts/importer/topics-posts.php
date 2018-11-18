@@ -87,7 +87,7 @@ foreach ($topics as $topic) {
         ':last_user_id'       => GetUserID($topic['last_poster']),                        // ID of the user who posted last
         ':last_post_id'       => intval($topic['last_post_id']),                          // Last post ID
         ':last_post_number'   => $totalPostsInDiscussion,                                 // Index of the last element of the topic
-        ':slug'               => Slugify($topic['subject']),                              // Topic url slug part (human-readable keywords)
+        ':slug'               => Slugify($topic['subject'], ['separator' => '-', 'lowercase' => true]),  // Topic url slug part (human-readable keywords)
         ':is_approved'        => 1,                                                       // Approve all migrated topics
         ':is_locked'          => intval($topic['closed']),                                // Is the topic locked ?
         ':is_sticky'          => intval($topic['sticky']),                                // Is the topic pinned ?
