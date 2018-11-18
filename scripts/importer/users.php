@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
-use Intervention\Image\ImageManager;
+use Intervention\Image\Image;
 
 WriteInLog('#############################');
 WriteInLog('### [1/9] Users migration ###');
@@ -63,10 +63,11 @@ foreach ($users as $user) {
 
         if ($avatar['is_exist'] === true) {
             $file = 'scripts/avatars/'.$user['id'].'.'.$avatar['extension'];
-            $newFileName = Str::lower(Str::quickRandom()).'.jpg';
+            $newFileName = Str::random().'.png';
 
-            $manager = new ImageManager();
-            $encodedImage = $manager->make($file)->fit(100, 100)->encode('jpg', 100);
+            $image = Image::make($file);
+            $encodedImage = $image->orientate()->fit(100, 100)->encode('png');
+
             file_put_contents('/flarum/app/assets/avatars/'.$newFileName, $encodedImage);
 
             $avatarMigrated++;
