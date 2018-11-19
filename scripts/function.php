@@ -59,7 +59,8 @@ function ConvertTimestampToDatetime($timestamp) {
 
 function Slugify($text, $options = null) {
     $slugify = new Slugify();
-    $slugify->slugify($text, $options);
+
+    return $slugify->slugify($text, $options);
 }
 
 function ReplaceUnsupportedMarks($text) {
@@ -160,7 +161,8 @@ function GetUserID($username) {
     if(!preg_match('/^[a-zA-Z0-9-_]+$/', $username)) {
         $username = Slugify($username, [
             'separator' => '',
-            'lowercase' => true
+            'regexp' => '/[^A-Za-z0-9_-]+/',
+            'lowercase_after_regexp' => true
         ]);
     }
 

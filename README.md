@@ -232,7 +232,7 @@ You can see the result of migration here : http://flarum.local
 
 #### Create custom plugin
 
-To create a custom plugin, you must create a file using this syntax `name_of_my_plugin.plugin.php`
+To create a custom plugin, you must create a file using this syntax `name_of_my_plugin.plugin.php`  
 Note: without a suffix `.plugin.php` the file will not be executed.
 
 #### TextFormatter Bundle

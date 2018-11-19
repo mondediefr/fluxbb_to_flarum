@@ -32,7 +32,8 @@ foreach ($users as $user) {
 
             $username = Slugify($user['username'], [
                 'separator' => '',
-                'lowercase' => true
+                'regexp' => '/[^A-Za-z0-9_-]+/',
+                'lowercase_after_regexp' => true
             ]);
             $query = RunPreparedQuery($dbFluxbb, [':username' => $username], "SELECT id FROM {$dbFluxbbPrefix}users WHERE username = :username collate utf8mb4_bin");
             $row = $query->fetch(PDO::FETCH_ASSOC);
